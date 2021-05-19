@@ -6,6 +6,7 @@ interface BBPolyConfig {
 }
 
 interface BBNetConfig {
+  path: string,
   bondAddress: string,
   rootChainManager: string,
   erc20Predicate: string
@@ -14,15 +15,17 @@ interface BBNetConfig {
 export function config(hre: HardhatRuntimeEnvironment): BBNetConfig {
   const { ethers } = hre;
   const networkName = hre.network.name;
-  console.log('Using config for network:', networkName)
+  console.log('Using config for network:', networkName);
 
   const cfg = {
     'hardhat': {
+      path: 'deploy-testnet',
       bondAddress: '0xc40a66AFB908789341A58B8423F89fE2cb7Dc1f9',
       rootChainManager: ethers.constants.AddressZero,
       erc20Predicate: ethers.constants.AddressZero,
     },
     'goerli': {
+      path: 'deploy-goerli',
       bondAddress: '0xc40a66AFB908789341A58B8423F89fE2cb7Dc1f9',
       rootChainManager: ethers.constants.AddressZero,
       erc20Predicate: ethers.constants.AddressZero,
