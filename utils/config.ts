@@ -20,13 +20,13 @@ export function config(hre: HardhatRuntimeEnvironment): BBNetConfig {
   const cfg = {
     'hardhat': {
       path: 'deploy-testnet',
-      bondAddress: '0xc40a66AFB908789341A58B8423F89fE2cb7Dc1f9',
+      bondAddress: '0xd7d55Fd7763A356aF99f17C9d6c21d933bC2e2F1',
       rootChainManager: ethers.constants.AddressZero,
       erc20Predicate: ethers.constants.AddressZero,
     },
     'goerli': {
       path: 'deploy-goerli',
-      bondAddress: '0xc40a66AFB908789341A58B8423F89fE2cb7Dc1f9',
+      bondAddress: '0xd7d55Fd7763A356aF99f17C9d6c21d933bC2e2F1',
       rootChainManager: ethers.constants.AddressZero,
       erc20Predicate: ethers.constants.AddressZero,
     }

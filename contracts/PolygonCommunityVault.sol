@@ -1,27 +1,29 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.4;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./matic/IRootChainManager.sol";
 
-contract PolygonCommunityVault is Ownable {
+contract PolygonCommunityVault is OwnableUpgradeable {
     IERC20 private _bond;
     IRootChainManager _rootChainManager;
     address _erc20Predicate;
 
-    constructor (address bond, address rootChainManager, address erc20Predicate) {
+    event SetAllowance(address indexed caller, address indexed spender, uint256 amount);
+
+    function initialize(address bond, address rootChainManager, address erc20Predicate) initializer public {
+        __Ownable_init();
+
         _bond = IERC20(bond);
-        
+
         if (rootChainManager != address(0)) {
             require(erc20Predicate != address(0), "if root chain manager is set, erc20 predicate must not be 0x0");
 
             _erc20Predicate = erc20Predicate;
             _rootChainManager = IRootChainManager(rootChainManager);
         }
-    }
-
-    event SetAllowance(address indexed caller, address indexed spender, uint256 amount);
+     }
 
     function setAllowance(address spender, uint amount) public onlyOwner {
         _bond.approve(spender, amount);
