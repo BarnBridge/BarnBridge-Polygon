@@ -52,6 +52,13 @@ const config: HardhatUserConfig = {
       url: node_url('goerli'),
       accounts: accounts('goerli'),
       gasPrice: 500000000000,
+      gasMultiplier: 2,
+    },
+    mumbai: {
+      deploy: ['deploy', 'deploy-mumbai'],
+      url: node_url('mumbai'),
+      accounts: accounts('mumbai'),
+      gasPrice: 2000000000,
       gasMultiplier: 1.5,
     },
   },

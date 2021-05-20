@@ -98,22 +98,4 @@ describe("Transfer to Polygon tests", () => {
 
   });
 
-  it("Should fail to transfer to Polygon without approval", async function () {
-    const {Bond, Vault, ERC20Predicate, StateSender} = await setup();
-    const value = "1000000000000000000000";
-
-    expect(await Bond.balanceOf(Vault.address))
-      .to.equal(value);
-
-    await expect(Vault.sendToPolygon())
-      .to.emit(Bond, "Approval")
-      .to.emit(ERC20Predicate, "LockedERC20").withArgs(Vault.address, Vault.address, Bond.address, value)
-      .to.emit(Bond, "Transfer").withArgs(Vault.address, ERC20Predicate.address, value)
-      .to.emit(StateSender, "StateSynced")
-
-    expect(await Bond.balanceOf(Vault.address))
-      .to.equal("0");
-
-  });
-
 });

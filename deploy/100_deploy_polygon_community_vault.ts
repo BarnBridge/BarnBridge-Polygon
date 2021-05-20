@@ -10,8 +10,8 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   const {owner} = await getNamedAccounts();
 
-  // use args to generate seed for salting so we get a new address if we change args
-  const seed = cfg.bondAddress + cfg.rootChainManager + cfg.erc20Predicate;
+  // change salt to force new deployment without code changes
+  const seed = "dev01";
   const salt = ethers.utils.sha256(ethers.utils.toUtf8Bytes(seed));
 
   const deployer = await deterministic("PolygonCommunityVault", {
