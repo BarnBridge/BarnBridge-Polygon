@@ -20,18 +20,21 @@ const setup = deployments.createFixture(async ({
 
   const contracts = {
     Vault: (await ethers.getContract("PolygonCommunityVault")),
-    Bond: (await ethers.getContractAt("ERC20", cfg.bondAddress, owner))
+    Bond: (await ethers.getContractAt("IERC20", cfg.bondAddress, owner)),
+    ERC20Predicate: (await ethers.getContractAt("IERC20Predicate", cfg.erc20Predicate, owner)),
+    StateSender: (await ethers.getContractAt("IStateSender", cfg.stateSender, owner)),
   };
 
   // These object allow you to write things like `users[0].Token.transfer(....)`
   const users = await setupUsers(await getUnnamedAccounts(), contracts);
 
+  // TODO get the proper interface and use mint instead of transfer
   await contracts.Bond.transfer(contracts.Vault.address, "1000000000000000000000").then((tx: { wait: () => any; }) => tx.wait());
 
   return {
     ...contracts,
     users,
-    owner: await setupUser(owner, contracts)
+    owner: await setupUser(owner, contracts),
   };
 });
 
@@ -43,10 +46,6 @@ describe("Initialization tests", () => {
 
     expect(vaultBalance)
       .to.equal("1000000000000000000000");
-  });
-
-  it("Should transfer all BOND balance to proxy", () => {
-
   });
 });
 
@@ -82,18 +81,35 @@ describe("Events", () => {
 
 describe("Transfer to Polygon tests", () => {
   it("Should transfer all BOND to Polygon", async function () {
-    const {Bond, Vault, owner} = await setup();
+    const {Bond, Vault, ERC20Predicate, StateSender} = await setup();
+    const value = "1000000000000000000000";
 
     expect(await Bond.balanceOf(Vault.address))
-      .to.equal("1000000000000000000000");
+      .to.equal(value);
 
-    // await Vault.sendToPolygon();
+    await expect(Vault.sendToPolygon())
+      .to.emit(Bond, "Approval")
+      .to.emit(ERC20Predicate, "LockedERC20").withArgs(Vault.address, Vault.address, Bond.address, value)
+      .to.emit(Bond, "Transfer").withArgs(Vault.address, ERC20Predicate.address, value)
+      .to.emit(StateSender, "StateSynced")
 
-    // expect('sendToPolygon').to.be.calledOnContract(Vault);
-    await expect(() => Vault.sendToPolygon())
-      .to.changeTokenBalance(Bond, Vault, "-1000000000000000000000")
-      .emit(Vault, "AA");
-    ;
+    expect(await Bond.balanceOf(Vault.address))
+      .to.equal("0");
+
+  });
+
+  it("Should fail to transfer to Polygon without approval", async function () {
+    const {Bond, Vault, ERC20Predicate, StateSender} = await setup();
+    const value = "1000000000000000000000";
+
+    expect(await Bond.balanceOf(Vault.address))
+      .to.equal(value);
+
+    await expect(Vault.sendToPolygon())
+      .to.emit(Bond, "Approval")
+      .to.emit(ERC20Predicate, "LockedERC20").withArgs(Vault.address, Vault.address, Bond.address, value)
+      .to.emit(Bond, "Transfer").withArgs(Vault.address, ERC20Predicate.address, value)
+      .to.emit(StateSender, "StateSynced")
 
     expect(await Bond.balanceOf(Vault.address))
       .to.equal("0");
