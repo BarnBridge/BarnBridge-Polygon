@@ -1,4 +1,4 @@
-import { expect } from "./chai-setup";
+import { expect } from "chai";
 
 import hre, { ethers, deployments, getNamedAccounts, getUnnamedAccounts } from "hardhat";
 
@@ -35,12 +35,11 @@ const setup = deployments.createFixture(async ({
   };
 });
 
-describe("PolygonCommunityVault contract", () => {
+describe("Initialization tests", () => {
   it("Deployment should succeed and 1000 BOND should be in vault", async function () {
     const {Bond, Vault, owner} = await setup();
 
     const vaultBalance = await Bond.balanceOf(Vault.address);
-    console.log("vault balance: ", vaultBalance);
 
     expect(vaultBalance)
       .to.equal("1000000000000000000000");
@@ -51,7 +50,7 @@ describe("PolygonCommunityVault contract", () => {
   });
 });
 
-describe("Contract Tests", function () {
+describe("Vault Tests", function () {
   it("Should fail if no owner tries to set allowance", async function () {
     const {owner, users} = await setup();
 
@@ -79,4 +78,26 @@ describe("Events", () => {
     await expect(owner.Vault.setAllowance(owner.address, "1000000000000000000000"))
       .to.emit(Vault, "SetAllowance");
   });
+});
+
+describe("Transfer to Polygon tests", () => {
+  it("Should transfer all BOND to Polygon", async function () {
+    const {Bond, Vault, owner} = await setup();
+
+    expect(await Bond.balanceOf(Vault.address))
+      .to.equal("1000000000000000000000");
+
+    // await Vault.sendToPolygon();
+
+    // expect('sendToPolygon').to.be.calledOnContract(Vault);
+    await expect(() => Vault.sendToPolygon())
+      .to.changeTokenBalance(Bond, Vault, "-1000000000000000000000")
+      .emit(Vault, "AA");
+    ;
+
+    expect(await Bond.balanceOf(Vault.address))
+      .to.equal("0");
+
+  });
+
 });

@@ -1,7 +1,8 @@
 import 'dotenv/config';
 import { HardhatUserConfig } from 'hardhat/types';
 import 'hardhat-deploy';
-import 'hardhat-deploy-ethers';
+import '@nomiclabs/hardhat-ethers';
+import "@nomiclabs/hardhat-waffle";
 import { node_url, accounts, ownerKeyHardhat } from './utils/network';
 import { config as cfg } from './utils/config';
 
