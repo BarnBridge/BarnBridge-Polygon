@@ -35,7 +35,7 @@ contract PolygonCommunityVault is OwnableUpgradeable {
 
     // TODO need to discuss if public or onlyOwner
     function sendToPolygon() public {
-        require(_erc20Predicate != address(0), "deposit to polygon must be enabled enabled on this vault");
+        require(_erc20Predicate != address(0), "Vault: deposit to polygon must be enabled enabled on this vault");
 
         uint256 amount =_token.balanceOf(address(this));
         _token.approve(_erc20Predicate, amount);

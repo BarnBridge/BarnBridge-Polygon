@@ -54,7 +54,7 @@ describe("Layer1 tests", () => {
   });
 
   describe("Vault Tests", function () {
-    it("Should fail if no owner tries to set allowance", async function () {
+    it("Should fail if random address tries to setAllowance", async function () {
       const {owner, users} = await setup();
 
       await expect(users[0].Vault.setAllowance(owner.address, "1")).to.be.revertedWith(
@@ -84,14 +84,32 @@ describe("Layer1 tests", () => {
   });
 
   describe("Transfer to Polygon tests", () => {
-    it("Should transfer all BOND to Polygon", async function () {
-      const {Bond, Vault, ERC20Predicate, StateSender} = await setup();
+    it("Should transfer all BOND to Polygon as owner", async function () {
+      const {Bond, Vault, ERC20Predicate, StateSender, owner} = await setup();
       const value = "1000000000000000000000";
 
       expect(await Bond.balanceOf(Vault.address))
         .to.equal(value);
 
-      await expect(Vault.sendToPolygon())
+      await expect(owner.Vault.sendToPolygon())
+        .to.emit(Bond, "Approval")
+        .to.emit(ERC20Predicate, "LockedERC20").withArgs(Vault.address, Vault.address, Bond.address, value)
+        .to.emit(Bond, "Transfer").withArgs(Vault.address, ERC20Predicate.address, value)
+        .to.emit(StateSender, "StateSynced");
+
+      expect(await Bond.balanceOf(Vault.address))
+        .to.equal("0");
+
+    });
+
+    it("Should transfer all BOND to Polygon as anyone", async function () {
+      const {Bond, Vault, ERC20Predicate, StateSender, users} = await setup();
+      const value = "1000000000000000000000";
+
+      expect(await Bond.balanceOf(Vault.address))
+        .to.equal(value);
+
+      await expect(users[0].Vault.sendToPolygon())
         .to.emit(Bond, "Approval")
         .to.emit(ERC20Predicate, "LockedERC20").withArgs(Vault.address, Vault.address, Bond.address, value)
         .to.emit(Bond, "Transfer").withArgs(Vault.address, ERC20Predicate.address, value)
@@ -145,4 +163,22 @@ describe("Layer2 tests", () => {
         .to.emit(Layer2Vault, "SetAllowance");
     });
   });
+
+  describe("Transfer to Polygon tests", () => {
+    it("sendToPolygon should revert", async function () {
+      const {Bond, Layer2Vault, owner} = await setup();
+      const value = "1000000000000000000000";
+
+      expect(await Bond.balanceOf(Layer2Vault.address))
+        .to.equal(value);
+
+      await expect(owner.Layer2Vault.sendToPolygon())
+        .to.be.revertedWith("Vault: deposit to polygon must be enabled enabled on this vault");
+
+      expect(await Bond.balanceOf(Layer2Vault.address))
+        .to.equal(value);
+
+    });
+  });
+
 });
