@@ -11,6 +11,7 @@ contract PolygonCommunityVault is OwnableUpgradeable {
     address _erc20Predicate;
 
     event SetAllowance(address indexed caller, address indexed spender, uint256 amount);
+    event TransferToPolygon(address indexed requester, address indexed token,  uint256 amount);
 
     function initialize(address token, address rootChainManager, address erc20Predicate) initializer public {
         require(token != address(0), "a valid token address must be provided");
@@ -34,12 +35,14 @@ contract PolygonCommunityVault is OwnableUpgradeable {
     }
 
     // TODO need to discuss if public or onlyOwner
-    function sendToPolygon() public {
+    function transferToPolygon() public {
         require(_erc20Predicate != address(0), "Vault: deposit to polygon must be enabled enabled on this vault");
 
         uint256 amount =_token.balanceOf(address(this));
         _token.approve(_erc20Predicate, amount);
         _rootChainManager.depositFor(address(this), address(_token), abi.encode(amount));
+
+        emit TransferToPolygon(msg.sender, address(_token), amount);
     }
 
 }

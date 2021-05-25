@@ -91,7 +91,7 @@ describe("Layer1 tests", () => {
       expect(await Bond.balanceOf(Vault.address))
         .to.equal(value);
 
-      await expect(owner.Vault.sendToPolygon())
+      await expect(owner.Vault.transferToPolygon())
         .to.emit(Bond, "Approval")
         .to.emit(ERC20Predicate, "LockedERC20").withArgs(Vault.address, Vault.address, Bond.address, value)
         .to.emit(Bond, "Transfer").withArgs(Vault.address, ERC20Predicate.address, value)
@@ -109,11 +109,12 @@ describe("Layer1 tests", () => {
       expect(await Bond.balanceOf(Vault.address))
         .to.equal(value);
 
-      await expect(users[0].Vault.sendToPolygon())
+      await expect(users[0].Vault.transferToPolygon())
         .to.emit(Bond, "Approval")
         .to.emit(ERC20Predicate, "LockedERC20").withArgs(Vault.address, Vault.address, Bond.address, value)
         .to.emit(Bond, "Transfer").withArgs(Vault.address, ERC20Predicate.address, value)
-        .to.emit(StateSender, "StateSynced");
+        .to.emit(StateSender, "StateSynced")
+        .to.emit(Vault, "TransferToPolygon").withArgs(users[0].address, Bond.address, value);
 
       expect(await Bond.balanceOf(Vault.address))
         .to.equal("0");
@@ -165,14 +166,14 @@ describe("Layer2 tests", () => {
   });
 
   describe("Transfer to Polygon tests", () => {
-    it("sendToPolygon should revert", async function () {
+    it("transferToPolygon should revert", async function () {
       const {Bond, Layer2Vault, owner} = await setup();
       const value = "1000000000000000000000";
 
       expect(await Bond.balanceOf(Layer2Vault.address))
         .to.equal(value);
 
-      await expect(owner.Layer2Vault.sendToPolygon())
+      await expect(owner.Layer2Vault.transferToPolygon())
         .to.be.revertedWith("Vault: deposit to polygon must be enabled enabled on this vault");
 
       expect(await Bond.balanceOf(Layer2Vault.address))
