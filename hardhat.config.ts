@@ -40,13 +40,6 @@ const config: HardhatUserConfig = {
         }
       ]
     },
-    kovan: {
-      deploy: ["deploy", "deploy-kovan"],
-      url: node_url("kovan"),
-      accounts: accounts("kovan"),
-      gasPrice: 500000000000,
-      gasMultiplier: 1.5
-    },
     goerli: {
       deploy: ["deploy", "deploy-goerli"],
       url: node_url("goerli"),

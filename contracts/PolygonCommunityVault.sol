@@ -6,43 +6,46 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./matic/IRootChainManager.sol";
 
 contract PolygonCommunityVault is OwnableUpgradeable {
-    IERC20 private _token;
-    IRootChainManager _rootChainManager;
-    address _erc20Predicate;
+    IRootChainManager internal rootChainManager;
+    address internal erc20Predicate;
+
+    address public token;
 
     event SetAllowance(address indexed caller, address indexed spender, uint256 amount);
     event TransferToPolygon(address indexed requester, address indexed token,  uint256 amount);
 
-    function initialize(address token, address rootChainManager, address erc20Predicate) initializer public {
-        require(token != address(0), "a valid token address must be provided");
+    function initialize(address _token, address _rootChainManager, address _erc20Predicate)  public initializer {
+        require(_token != address(0), "Vault: a valid token address must be provided");
 
         __Ownable_init();
 
-        _token = IERC20(token);
+        token = _token;
 
-        if (rootChainManager != address(0)) {
-            require(erc20Predicate != address(0), "if root chain manager is set, erc20 predicate must not be 0x0");
+        if (_rootChainManager != address(0)) {
+            require(_erc20Predicate != address(0), "Vault: erc20Predicate must not be 0x0");
 
-            _erc20Predicate = erc20Predicate;
-            _rootChainManager = IRootChainManager(rootChainManager);
+            erc20Predicate = _erc20Predicate;
+            rootChainManager = IRootChainManager(_rootChainManager);
         }
      }
 
     function setAllowance(address spender, uint amount) public onlyOwner {
-        _token.approve(spender, amount);
+        IERC20(token).approve(spender, amount);
 
         emit SetAllowance(msg.sender, spender, amount);
     }
 
     // TODO need to discuss if public or onlyOwner
     function transferToPolygon() public {
-        require(_erc20Predicate != address(0), "Vault: deposit to polygon must be enabled enabled on this vault");
+        require(erc20Predicate != address(0), "Vault: deposit to polygon must be enabled enabled on this vault");
 
-        uint256 amount =_token.balanceOf(address(this));
-        _token.approve(_erc20Predicate, amount);
-        _rootChainManager.depositFor(address(this), address(_token), abi.encode(amount));
+        IERC20 erc20 = IERC20(token);
 
-        emit TransferToPolygon(msg.sender, address(_token), amount);
+        uint256 amount = erc20.balanceOf(address(this));
+        erc20.approve(erc20Predicate, amount);
+        rootChainManager.depositFor(address(this), token, abi.encode(amount));
+
+        emit TransferToPolygon(msg.sender, token, amount);
     }
 
 }
