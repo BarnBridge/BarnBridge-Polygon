@@ -7,6 +7,7 @@ interface BBPolyConfig {
 
 interface BBNetConfig {
   path: string,
+  seed: string,
   bondAddress: string,
   rootChainManager: string,
   erc20Predicate: string
@@ -23,6 +24,7 @@ export function config(hre: HardhatRuntimeEnvironment): BBNetConfig {
   const cfg = {
     "hardhat": {
       path: "deploy-testnet",
+      seed: "dev01",
       bondAddress: "0xd7d55Fd7763A356aF99f17C9d6c21d933bC2e2F1",
       rootChainManager: "0xBbD7cBFA79faee899Eaf900F13C9065bF03B1A74",
       erc20Predicate: "0xdD6596F2029e6233DEFfaCa316e6A95217d4Dc34",
@@ -33,6 +35,7 @@ export function config(hre: HardhatRuntimeEnvironment): BBNetConfig {
     },
     "goerli": {
       path: "deploy-goerli",
+      seed: "dev01",
       bondAddress: "0xd7d55Fd7763A356aF99f17C9d6c21d933bC2e2F1",
       rootChainManager: "0xBbD7cBFA79faee899Eaf900F13C9065bF03B1A74",
       erc20Predicate: "0xdD6596F2029e6233DEFfaCa316e6A95217d4Dc34",
@@ -41,6 +44,7 @@ export function config(hre: HardhatRuntimeEnvironment): BBNetConfig {
     },
     "mumbai": {
       path: "deploy-mumbai",
+      seed: "dev01",
       bondAddress: "0xebB83c1b86A27eb9e2523A2c117F1d656269dbAE",
       rootChainManager: addressZero,
       erc20Predicate: addressZero,

@@ -11,11 +11,11 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const {owner} = await getNamedAccounts();
 
   // change salt to force new deployment without code changes
-  const seed = "dev01-layer2";
+  const seed = cfg.seed + "harvester";
   const salt = ethers.utils.sha256(ethers.utils.toUtf8Bytes(seed));
 
-  const deployer = await deterministic("Layer2PolygonCommunityVault", {
-    contract: 'PolygonCommunityVault',
+  // overwrites main deployment
+  const deployer = await deterministic("TokenHarvester", {
     from: owner,
     args: [],
     log: true,
@@ -26,9 +26,9 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   if (deployResult.newlyDeployed) {
     const txResult = await execute(
-      "Layer2PolygonCommunityVault",
+      "TokenHarvester",
       {from: owner},
-      "initialize", cfg.bondAddress, ethers.constants.AddressZero, ethers.constants.AddressZero,
+      "initialize", ((await deployments.get('MockRootChainManager')).address),
     );
     console.log(`executed initialize (tx: ${txResult.transactionHash}) with status ${txResult.status}`);
   }
@@ -36,4 +36,4 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
 export default func;
 
-func.tags = ["Layer2PolygonCommunityVault"];
+func.tags = ["TokenHarvester"];

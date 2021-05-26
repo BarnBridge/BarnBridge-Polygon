@@ -6,17 +6,17 @@ import { setupUsers, setupUser } from "./helpers";
 import { config } from "../utils/config";
 
 const setup = deployments.createFixture(async ({
-  deployments,
-  getNamedAccounts,
-  getUnnamedAccounts,
-  ethers
-}, options) => {
+                                                 deployments,
+                                                 getNamedAccounts,
+                                                 getUnnamedAccounts,
+                                                 ethers
+                                               }, options) => {
   const cfg = config(hre);
 
   //await deployments.fixture(["PolygonCommunityVault"]);
   await deployments.fixture();
 
-  const { owner } = await getNamedAccounts();
+  const {owner} = await getNamedAccounts();
 
   const contracts = {
     Vault: (await ethers.getContract("PolygonCommunityVault")),
@@ -41,29 +41,37 @@ const setup = deployments.createFixture(async ({
   };
 });
 
-describe("Layer1 tests", () => {
+describe("Vault Layer1 tests", () => {
   describe("Initialization tests", () => {
     it("Deployment should succeed and 1000 BOND should be in vault", async function () {
-      const { Bond, Vault } = await setup();
+      const {Bond, Vault} = await setup();
 
       expect(await Bond.balanceOf(Vault.address))
         .to.equal("1000000000000000000000");
 
-      expect(await Vault.token()).to.equal(Bond.address)
+      expect(await Vault.token()).to.equal(Bond.address);
     });
   });
 
   describe("Vault Tests", function () {
     it("Should fail if random address tries to setAllowance", async function () {
-      const { owner, users } = await setup();
+      const {owner, users} = await setup();
 
       await expect(users[0].Vault.setAllowance(owner.address, "1")).to.be.revertedWith(
         "Ownable: caller is not the owner"
       );
     });
 
-    it("Should transfer ownership", async function () {
-      const { Vault, owner, users } = await setup();
+    it("Should fail if random address tries to transferOwnership", async function () {
+      const {users} = await setup();
+
+      await expect(users[0].Vault.transferOwnership(users[0].address)).to.be.revertedWith(
+        "Ownable: caller is not the owner"
+      );
+    });
+
+    it("Should transferOwnership", async function () {
+      const {Vault, owner, users} = await setup();
 
       expect(await Vault.owner()).to.be.equal(owner.address);
 
@@ -76,26 +84,27 @@ describe("Layer1 tests", () => {
 
   describe("Events", () => {
     it("setAllowance works for owner and emits SetAllowance", async function () {
-      const { Vault, owner, users } = await setup();
+      const {Vault, owner, users} = await setup();
 
       await expect(owner.Vault.setAllowance(owner.address, "1000000000000000000000"))
         .to.emit(Vault, "SetAllowance");
     });
   });
 
-  describe("Transfer to Polygon tests", () => {
-    it("Should transfer all BOND to Polygon as owner", async function () {
-      const { Bond, Vault, ERC20Predicate, StateSender, owner } = await setup();
+  describe("transferToLayer2 tests", () => {
+    it("Should transfer all BOND to layer 2 as owner", async function () {
+      const {Bond, Vault, ERC20Predicate, StateSender, owner} = await setup();
       const value = "1000000000000000000000";
 
       expect(await Bond.balanceOf(Vault.address))
         .to.equal(value);
 
-      await expect(owner.Vault.transferToPolygon())
+      await expect(owner.Vault.transferToLayer2())
         .to.emit(Bond, "Approval")
         .to.emit(ERC20Predicate, "LockedERC20").withArgs(Vault.address, Vault.address, Bond.address, value)
         .to.emit(Bond, "Transfer").withArgs(Vault.address, ERC20Predicate.address, value)
-        .to.emit(StateSender, "StateSynced");
+        .to.emit(StateSender, "StateSynced")
+        .to.emit(Vault, "TransferToLayer2").withArgs(owner.address, Bond.address, value);
 
       expect(await Bond.balanceOf(Vault.address))
         .to.equal("0");
@@ -103,18 +112,18 @@ describe("Layer1 tests", () => {
     });
 
     it("Should transfer all BOND to Polygon as anyone", async function () {
-      const { Bond, Vault, ERC20Predicate, StateSender, users } = await setup();
+      const {Bond, Vault, ERC20Predicate, StateSender, users} = await setup();
       const value = "1000000000000000000000";
 
       expect(await Bond.balanceOf(Vault.address))
         .to.equal(value);
 
-      await expect(users[0].Vault.transferToPolygon())
+      await expect(users[0].Vault.transferToLayer2())
         .to.emit(Bond, "Approval")
         .to.emit(ERC20Predicate, "LockedERC20").withArgs(Vault.address, Vault.address, Bond.address, value)
         .to.emit(Bond, "Transfer").withArgs(Vault.address, ERC20Predicate.address, value)
         .to.emit(StateSender, "StateSynced")
-        .to.emit(Vault, "TransferToPolygon").withArgs(users[0].address, Bond.address, value);
+        .to.emit(Vault, "TransferToLayer2").withArgs(users[0].address, Bond.address, value);
 
       expect(await Bond.balanceOf(Vault.address))
         .to.equal("0");
@@ -123,10 +132,10 @@ describe("Layer1 tests", () => {
   });
 });
 
-describe("Layer2 tests", () => {
+describe("Vault Layer2 tests", () => {
   describe("Initialization tests", () => {
     it("Deployment should succeed and 1000 BOND should be in vault", async function () {
-      const { Bond, Layer2Vault } = await setup();
+      const {Bond, Layer2Vault} = await setup();
 
       const vaultBalance = await Bond.balanceOf(Layer2Vault.address);
 
@@ -137,15 +146,15 @@ describe("Layer2 tests", () => {
 
   describe("Vault Tests", function () {
     it("Should fail if no owner tries to set allowance", async function () {
-      const { owner, users } = await setup();
+      const {owner, users} = await setup();
 
       await expect(users[0].Layer2Vault.setAllowance(owner.address, "1")).to.be.revertedWith(
         "Ownable: caller is not the owner"
       );
     });
 
-    it("Should transfer ownership", async function () {
-      const { Layer2Vault, owner, users } = await setup();
+    it("Should transferOwnership", async function () {
+      const {Layer2Vault, owner, users} = await setup();
 
       expect(await Layer2Vault.owner()).to.be.equal(owner.address);
 
@@ -158,23 +167,23 @@ describe("Layer2 tests", () => {
 
   describe("Events", () => {
     it("setAllowance works for owner and emits SetAllowance", async function () {
-      const { Layer2Vault, owner } = await setup();
+      const {Layer2Vault, owner} = await setup();
 
       await expect(owner.Layer2Vault.setAllowance(owner.address, "1000000000000000000000"))
         .to.emit(Layer2Vault, "SetAllowance");
     });
   });
 
-  describe("Transfer to Polygon tests", () => {
-    it("transferToPolygon should revert", async function () {
-      const { Bond, Layer2Vault, owner } = await setup();
+  describe("Transfer to Layer 2 tests", () => {
+    it("transferToLayer2 should revert", async function () {
+      const {Bond, Layer2Vault, owner} = await setup();
       const value = "1000000000000000000000";
 
       expect(await Bond.balanceOf(Layer2Vault.address))
         .to.equal(value);
 
-      await expect(owner.Layer2Vault.transferToPolygon())
-        .to.be.revertedWith("Vault: deposit to polygon must be enabled enabled on this vault");
+      await expect(owner.Layer2Vault.transferToLayer2())
+        .to.be.revertedWith("Vault: deposit to layer2 must be enabled enabled");
 
       expect(await Bond.balanceOf(Layer2Vault.address))
         .to.equal(value);
