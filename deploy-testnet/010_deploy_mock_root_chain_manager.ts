@@ -2,12 +2,16 @@ import { DeployFunction } from "hardhat-deploy/types";
 import { config } from "../utils/config";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 
+const deploymentName = "MockRootChainManager";
+
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   // @ts-ignore
   const {deployments, getNamedAccounts} = hre;
   const {deploy} = deployments;
 
   const {owner} = await getNamedAccounts();
+
+  console.log("deploy-testnet:", deploymentName);
 
   await deploy('MockRootChainManager', {
     contract: "RootChainManager",
@@ -20,4 +24,4 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
 export default func;
 
-func.tags = ["MockRootChainManager"];
+func.tags = [deploymentName];

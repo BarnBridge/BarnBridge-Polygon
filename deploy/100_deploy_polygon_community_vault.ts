@@ -2,6 +2,8 @@ import { DeployFunction } from "hardhat-deploy/types";
 import { config } from "../utils/config";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 
+const deploymentName = "PolygonCommunityVault";
+
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   // @ts-ignore
   const {deployments, getNamedAccounts, ethers} = hre;
@@ -10,11 +12,13 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   const {owner} = await getNamedAccounts();
 
+  console.log("deploy:", deploymentName);
+
   // change salt to force new deployment without code changes
   const seed = cfg.seed + "vault";
   const salt = ethers.utils.sha256(ethers.utils.toUtf8Bytes(seed));
 
-  const deployer = await deterministic("PolygonCommunityVault", {
+  const deployer = await deterministic(deploymentName, {
     from: owner,
     args: [],
     log: true,
@@ -25,7 +29,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   if (deployResult.newlyDeployed) {
     const txResult = await execute(
-      "PolygonCommunityVault",
+      deploymentName,
       {from: owner},
       "initialize", cfg.bondAddress, cfg.rootChainManager, cfg.erc20Predicate,
     );
@@ -35,4 +39,4 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
 export default func;
 
-func.tags = ["PolygonCommunityVault"];
+func.tags = [deploymentName];

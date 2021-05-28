@@ -20,7 +20,7 @@ const setup = deployments.createFixture(async ({
 
   const contracts = {
     Harvester: (await ethers.getContract("TokenHarvester")),
-    // Layer2Harvester: (await ethers.getContract("Layer2PolygonCommunityVault")),
+    Layer2Harvester: (await ethers.getContract("Layer2TokenHarvester")),
     Bond: (await ethers.getContractAt("IERC20", cfg.bondAddress, owner)),
     MockRootChainManager: (await ethers.getContract("MockRootChainManager"))
     // ERC20Predicate: (await ethers.getContractAt("IERC20Predicate", cfg.erc20Predicate, owner)),
@@ -41,7 +41,7 @@ const setup = deployments.createFixture(async ({
     owner: await setupUser(owner, contracts)
   };
 });
-//
+
 describe("Harvester Layer1 tests", () => {
   describe("Initialization tests", () => {
     it("Deployment should succeed and owner be set", async function () {
@@ -49,6 +49,8 @@ describe("Harvester Layer1 tests", () => {
 
       expect(await Bond.balanceOf(Harvester.address))
         .to.equal("0");
+
+      expect(await Harvester.owner()).to.be.equal(owner.address);
     });
   });
 
@@ -74,7 +76,7 @@ describe("Harvester Layer1 tests", () => {
   });
 
   // TODO add multiple tokens tests
-  describe("Layer1 Token Tests", () => {
+  describe("Root Chain Token Tests", () => {
     it("Should allow any user to exit and transfer tokens to owner", async function () {
       const {Bond, Harvester, owner, users} = await setup();
       const value = "1000000000000000000000";
@@ -82,8 +84,8 @@ describe("Harvester Layer1 tests", () => {
       expect(await Bond.balanceOf(Harvester.address))
         .to.equal("0");
 
-      await expect(users[0].Harvester.withdrawOnLayer1("0x00"))
-        .to.emit(Harvester, "WithdrawLayer1").withArgs(users[0].address);
+      await expect(users[0].Harvester.withdrawOnRoot("0x00"))
+        .to.emit(Harvester, "WithdrawOnRoot").withArgs(users[0].address);
 
       // transfer some funds manually to the Harvester
       const beforeBalance = await Bond.balanceOf(owner.address);
@@ -105,18 +107,37 @@ describe("Harvester Layer1 tests", () => {
         .to.equal(beforeBalance);
     });
 
-    describe("Failing Layer2 Token Tests", () => {
-      it("Should fail withdrawOnLayer2", async function () {
+    describe("Failing Child Function on Root Chain Tests", () => {
+      it("Should fail withdrawOnChild", async function () {
         const {Bond, users} = await setup();
 
-        await expect(users[0].Harvester.withdrawOnLayer2(Bond.address)).to.be.revertedWith(
-          "Harvester: should only be called on layer 2"
+        await expect(users[0].Harvester.withdrawOnChild(Bond.address)).to.be.revertedWith(
+          "Harvester: should only be called on child chain"
         );
       });
     });
   });
 });
 
-//
-describe("Layer2 tests", () => {
+describe("Child Chain Tests", () => {
+  describe("Initialization Tests", () => {
+    it("Deployment should succeed and owner be set", async function () {
+      const {Bond, Layer2Harvester, owner} = await setup();
+
+      expect(await Bond.balanceOf(Layer2Harvester.address))
+        .to.equal("0");
+
+      expect(await Layer2Harvester.owner()).to.be.equal(owner.address);
+    });
+  });
+
+  describe("Failing Root Functions on Child Chain Tests", () => {
+    it("Should fail withdrawOnLayer1", async function () {
+      const {users} = await setup();
+
+      await expect(users[0].Layer2Harvester.withdrawOnRoot("0x00")).to.be.revertedWith(
+        "Harvester: should only be called on root chain"
+      );
+    });
+  });
 });

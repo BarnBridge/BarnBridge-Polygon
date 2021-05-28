@@ -8,48 +8,48 @@ import "./matic/IERC20ChildToken.sol";
 
 contract TokenHarvester is OwnableUpgradeable {
     IRootChainManager rootChainManager;
-    bool private _layer2;
+    bool private _onRootChain;
 
     event SetAllowance(address indexed caller, address indexed spender, uint256 amount);
     event TransferToOwner(address indexed caller,  address indexed owner, address indexed token,  uint256 amount);
-    event WithdrawLayer1(address indexed caller);
-    event WithdrawLayer2(address indexed caller, address indexed token,  uint256 amount);
+    event WithdrawOnRoot(address indexed caller);
+    event WithdrawOnChild(address indexed caller, address indexed token,  uint256 amount);
 
     function initialize(address _rootChainManager) initializer public {
         __Ownable_init();
 
         if (_rootChainManager != address(0)) {
-            _layer2 = false;
+            _onRootChain = true;
             rootChainManager = IRootChainManager(_rootChainManager);
         } else {
-            _layer2 = true;
+            _onRootChain = false;
         }
      }
 
-    modifier onlyLayer1 {
+    modifier onlyOnRoot {
         require(
-            _layer2 == false,
-            "Harvester: should only be called on layer 1"
+            _onRootChain == true,
+            "Harvester: should only be called on root chain"
         );
         _;
     }
 
-    modifier onlyLayer2 {
+    modifier onlyOnChild {
         require(
-            _layer2 == true,
-            "Harvester: should only be called on layer 2"
+            _onRootChain == false,
+            "Harvester: should only be called on child chain"
         );
         _;
     }
 
     // Layer 1 related functions
-    function withdrawOnLayer1(bytes memory _data) public onlyLayer1 {
+    function withdrawOnRoot(bytes memory _data) public onlyOnRoot {
         rootChainManager.exit(_data);
 
-        emit WithdrawLayer1(_msgSender());
+        emit WithdrawOnRoot(_msgSender());
     }
 
-    function transferToOwner(address _token) public onlyLayer1 {
+    function transferToOwner(address _token) public onlyOnRoot {
         require(_token != address(0), "Harvester: token address must be specified");
 
         IERC20 erc20 = IERC20(_token);
@@ -63,7 +63,7 @@ contract TokenHarvester is OwnableUpgradeable {
     }
 
     // Layer 2 related functions
-    function withdrawOnLayer2(address _childToken) public onlyLayer2 {
+    function withdrawOnChild(address _childToken) public onlyOnChild {
         require(_childToken != address(0), "Harvester: child token address must be specified");
 
         IERC20ChildToken erc20 = IERC20ChildToken(_childToken);
@@ -71,6 +71,6 @@ contract TokenHarvester is OwnableUpgradeable {
         uint256 amount = erc20.balanceOf(address(this));
         erc20.withdraw(amount);
 
-        emit WithdrawLayer2(_msgSender(), _childToken, amount);
+        emit WithdrawOnChild(_msgSender(), _childToken, amount);
     }
 }

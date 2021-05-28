@@ -2,6 +2,8 @@ import { DeployFunction } from "hardhat-deploy/types";
 import { config } from "../utils/config";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 
+const deploymentName = "TokenHarvester";
+
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   // @ts-ignore
   const {deployments, getNamedAccounts, ethers} = hre;
@@ -14,8 +16,10 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const seed = cfg.seed + "harvester";
   const salt = ethers.utils.sha256(ethers.utils.toUtf8Bytes(seed));
 
+  console.log("deploy-testnet:", deploymentName);
+
   // overwrites main deployment
-  const deployer = await deterministic("TokenHarvester", {
+  const deployer = await deterministic(deploymentName, {
     from: owner,
     args: [],
     log: true,
@@ -26,7 +30,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   if (deployResult.newlyDeployed) {
     const txResult = await execute(
-      "TokenHarvester",
+      deploymentName,
       {from: owner},
       "initialize", ((await deployments.get('MockRootChainManager')).address),
     );
@@ -36,4 +40,4 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
 export default func;
 
-func.tags = ["TokenHarvester"];
+func.tags = [deploymentName];

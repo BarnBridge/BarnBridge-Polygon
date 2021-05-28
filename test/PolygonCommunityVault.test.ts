@@ -91,7 +91,7 @@ describe("Vault Layer1 tests", () => {
     });
   });
 
-  describe("transferToLayer2 tests", () => {
+  describe("transferToChild tests", () => {
     it("Should transfer all BOND to layer 2 as owner", async function () {
       const {Bond, Vault, ERC20Predicate, StateSender, owner} = await setup();
       const value = "1000000000000000000000";
@@ -99,31 +99,31 @@ describe("Vault Layer1 tests", () => {
       expect(await Bond.balanceOf(Vault.address))
         .to.equal(value);
 
-      await expect(owner.Vault.transferToLayer2())
+      await expect(owner.Vault.transferToChild())
         .to.emit(Bond, "Approval")
         .to.emit(ERC20Predicate, "LockedERC20").withArgs(Vault.address, Vault.address, Bond.address, value)
         .to.emit(Bond, "Transfer").withArgs(Vault.address, ERC20Predicate.address, value)
         .to.emit(StateSender, "StateSynced")
-        .to.emit(Vault, "TransferToLayer2").withArgs(owner.address, Bond.address, value);
+        .to.emit(Vault, "TransferToChild").withArgs(owner.address, Bond.address, value);
 
       expect(await Bond.balanceOf(Vault.address))
         .to.equal("0");
 
     });
 
-    it("Should transfer all BOND to Polygon as anyone", async function () {
+    it("Should transfer all BOND to Child as anyone", async function () {
       const {Bond, Vault, ERC20Predicate, StateSender, users} = await setup();
       const value = "1000000000000000000000";
 
       expect(await Bond.balanceOf(Vault.address))
         .to.equal(value);
 
-      await expect(users[0].Vault.transferToLayer2())
+      await expect(users[0].Vault.transferToChild())
         .to.emit(Bond, "Approval")
         .to.emit(ERC20Predicate, "LockedERC20").withArgs(Vault.address, Vault.address, Bond.address, value)
         .to.emit(Bond, "Transfer").withArgs(Vault.address, ERC20Predicate.address, value)
         .to.emit(StateSender, "StateSynced")
-        .to.emit(Vault, "TransferToLayer2").withArgs(users[0].address, Bond.address, value);
+        .to.emit(Vault, "TransferToChild").withArgs(users[0].address, Bond.address, value);
 
       expect(await Bond.balanceOf(Vault.address))
         .to.equal("0");
@@ -175,14 +175,14 @@ describe("Vault Layer2 tests", () => {
   });
 
   describe("Transfer to Layer 2 tests", () => {
-    it("transferToLayer2 should revert", async function () {
+    it("transferToChild should revert", async function () {
       const {Bond, Layer2Vault, owner} = await setup();
       const value = "1000000000000000000000";
 
       expect(await Bond.balanceOf(Layer2Vault.address))
         .to.equal(value);
 
-      await expect(owner.Layer2Vault.transferToLayer2())
+      await expect(owner.Layer2Vault.transferToChild())
         .to.be.revertedWith("Vault: deposit to layer2 must be enabled enabled");
 
       expect(await Bond.balanceOf(Layer2Vault.address))
