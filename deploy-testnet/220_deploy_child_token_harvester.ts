@@ -2,7 +2,7 @@ import { DeployFunction } from "hardhat-deploy/types";
 import { config } from "../utils/config";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 
-const deploymentName = "TokenHarvester";
+const deploymentName = "ChildPolygonTokenHarvester";
 
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   // @ts-ignore
@@ -12,14 +12,15 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   const {owner} = await getNamedAccounts();
 
-  // change salt to force new deployment without code changes
-  const seed = cfg.seed + "harvester";
-  const salt = ethers.utils.sha256(ethers.utils.toUtf8Bytes(seed));
-
   console.log("deploy-testnet:", deploymentName);
+
+  // change salt to force new deployment without code changes
+  const seed = cfg.seed + "harvester" + "-test-child";
+  const salt = ethers.utils.sha256(ethers.utils.toUtf8Bytes(seed));
 
   // overwrites main deployment
   const deployer = await deterministic(deploymentName, {
+    contract: "PolygonTokenHarvester",
     from: owner,
     args: [],
     log: true,
@@ -32,7 +33,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     const txResult = await execute(
       deploymentName,
       {from: owner},
-      "initialize", ((await deployments.get('MockRootChainManager')).address),
+      "initialize", ethers.constants.AddressZero,
     );
     console.log(`executed initialize (tx: ${txResult.transactionHash}) with status ${txResult.status}`);
   }

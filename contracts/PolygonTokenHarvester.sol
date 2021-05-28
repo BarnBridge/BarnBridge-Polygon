@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./matic/IRootChainManager.sol";
 import "./matic/IERC20ChildToken.sol";
 
-contract TokenHarvester is OwnableUpgradeable {
+contract PolygonTokenHarvester is OwnableUpgradeable {
     IRootChainManager rootChainManager;
     bool private _onRootChain;
 
@@ -42,7 +42,7 @@ contract TokenHarvester is OwnableUpgradeable {
         _;
     }
 
-    // Layer 1 related functions
+    // Root Chain Related Functions
     function withdrawOnRoot(bytes memory _data) public onlyOnRoot {
         rootChainManager.exit(_data);
 
@@ -62,7 +62,7 @@ contract TokenHarvester is OwnableUpgradeable {
         emit TransferToOwner(_msgSender(), owner, _token, amount);
     }
 
-    // Layer 2 related functions
+    // Child Chain Related Functions
     function withdrawOnChild(address _childToken) public onlyOnChild {
         require(_childToken != address(0), "Harvester: child token address must be specified");
 

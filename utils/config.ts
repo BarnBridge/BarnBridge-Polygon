@@ -19,8 +19,6 @@ export function config(hre: HardhatRuntimeEnvironment): BBNetConfig {
   const networkName = hre.network.name;
   const addressZero = hre.ethers.constants.AddressZero;
 
-  console.log("Using config for network:", networkName);
-
   const cfg = {
     "hardhat": {
       path: "deploy-testnet",

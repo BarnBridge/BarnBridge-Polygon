@@ -36,7 +36,7 @@ contract PolygonCommunityVault is OwnableUpgradeable {
     }
 
     function transferToChild() public {
-        require(erc20Predicate != address(0), "Vault: deposit to layer2 must be enabled enabled");
+        require(erc20Predicate != address(0), "Vault: transfer to child chain is disabled");
 
         IERC20 erc20 = IERC20(token);
 

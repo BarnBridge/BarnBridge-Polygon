@@ -1,15 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
-import { FxBaseRootTunnel } from './matic//FxBaseRootTunnel.sol';
+import {FxBaseRootTunnel} from "./matic//FxBaseRootTunnel.sol";
 
-/**
- * @title FxStateRootTunnel
- */
-contract FxStateRootTunnel is FxBaseRootTunnel {
+contract PolygonDAORoot is FxBaseRootTunnel {
     bytes public latestData;
 
-    constructor(address _checkpointManager, address _fxRoot)  FxBaseRootTunnel(_checkpointManager, _fxRoot) {}
+    constructor(address _checkpointManager, address _fxRoot) FxBaseRootTunnel(_checkpointManager, _fxRoot) {
+    }
 
     function _processMessageFromChild(bytes memory data) internal override {
         latestData = data;

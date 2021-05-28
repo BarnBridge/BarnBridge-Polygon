@@ -19,8 +19,8 @@ const setup = deployments.createFixture(async ({
   const {owner} = await getNamedAccounts();
 
   const contracts = {
-    Vault: (await ethers.getContract("PolygonCommunityVault")),
-    Layer2Vault: (await ethers.getContract("Layer2PolygonCommunityVault")),
+    RootVault: (await ethers.getContract("PolygonCommunityVault")),
+    ChildVault: (await ethers.getContract("ChildPolygonCommunityVault")),
     Bond: (await ethers.getContractAt("IERC20", cfg.bondAddress, owner)),
     ERC20Predicate: (await ethers.getContractAt("IERC20Predicate", cfg.erc20Predicate, owner)),
     StateSender: (await ethers.getContractAt("IStateSender", cfg.stateSender, owner))
@@ -30,9 +30,9 @@ const setup = deployments.createFixture(async ({
   const users = await setupUsers(await getUnnamedAccounts(), contracts);
 
   // TODO get the proper interface and use mint instead of transfer
-  await contracts.Bond.transfer(contracts.Vault.address, "1000000000000000000000").then((tx: { wait: () => any; }) => tx.wait());
+  await contracts.Bond.transfer(contracts.RootVault.address, "1000000000000000000000").then((tx: { wait: () => any; }) => tx.wait());
 
-  await contracts.Bond.transfer(contracts.Layer2Vault.address, "1000000000000000000000").then((tx: { wait: () => any; }) => tx.wait());
+  await contracts.Bond.transfer(contracts.ChildVault.address, "1000000000000000000000").then((tx: { wait: () => any; }) => tx.wait());
 
   return {
     ...contracts,
@@ -41,15 +41,15 @@ const setup = deployments.createFixture(async ({
   };
 });
 
-describe("Vault Layer1 tests", () => {
-  describe("Initialization tests", () => {
+describe("Vault Root Chain Tests", () => {
+  describe("Initialization Tests", () => {
     it("Deployment should succeed and 1000 BOND should be in vault", async function () {
-      const {Bond, Vault} = await setup();
+      const {Bond, RootVault} = await setup();
 
-      expect(await Bond.balanceOf(Vault.address))
+      expect(await Bond.balanceOf(RootVault.address))
         .to.equal("1000000000000000000000");
 
-      expect(await Vault.token()).to.equal(Bond.address);
+      expect(await RootVault.token()).to.equal(Bond.address);
     });
   });
 
@@ -57,7 +57,7 @@ describe("Vault Layer1 tests", () => {
     it("Should fail if random address tries to setAllowance", async function () {
       const {owner, users} = await setup();
 
-      await expect(users[0].Vault.setAllowance(owner.address, "1")).to.be.revertedWith(
+      await expect(users[0].RootVault.setAllowance(owner.address, "1")).to.be.revertedWith(
         "Ownable: caller is not the owner"
       );
     });
@@ -65,79 +65,79 @@ describe("Vault Layer1 tests", () => {
     it("Should fail if random address tries to transferOwnership", async function () {
       const {users} = await setup();
 
-      await expect(users[0].Vault.transferOwnership(users[0].address)).to.be.revertedWith(
+      await expect(users[0].RootVault.transferOwnership(users[0].address)).to.be.revertedWith(
         "Ownable: caller is not the owner"
       );
     });
 
     it("Should transferOwnership", async function () {
-      const {Vault, owner, users} = await setup();
+      const {RootVault, owner, users} = await setup();
 
-      expect(await Vault.owner()).to.be.equal(owner.address);
+      expect(await RootVault.owner()).to.be.equal(owner.address);
 
-      await expect(owner.Vault.transferOwnership(users[0].address))
-        .to.emit(Vault, "OwnershipTransferred");
+      await expect(owner.RootVault.transferOwnership(users[0].address))
+        .to.emit(RootVault, "OwnershipTransferred");
 
-      expect(await Vault.owner()).to.be.equal(users[0].address);
+      expect(await RootVault.owner()).to.be.equal(users[0].address);
     });
   });
 
   describe("Events", () => {
     it("setAllowance works for owner and emits SetAllowance", async function () {
-      const {Vault, owner, users} = await setup();
+      const {RootVault, owner, users} = await setup();
 
-      await expect(owner.Vault.setAllowance(owner.address, "1000000000000000000000"))
-        .to.emit(Vault, "SetAllowance");
+      await expect(owner.RootVault.setAllowance(owner.address, "1000000000000000000000"))
+        .to.emit(RootVault, "SetAllowance");
     });
   });
 
   describe("transferToChild tests", () => {
-    it("Should transfer all BOND to layer 2 as owner", async function () {
-      const {Bond, Vault, ERC20Predicate, StateSender, owner} = await setup();
+    it("Should transfer all BOND to Child Chain as owner", async function () {
+      const {Bond, RootVault, ERC20Predicate, StateSender, owner} = await setup();
       const value = "1000000000000000000000";
 
-      expect(await Bond.balanceOf(Vault.address))
+      expect(await Bond.balanceOf(RootVault.address))
         .to.equal(value);
 
-      await expect(owner.Vault.transferToChild())
+      await expect(owner.RootVault.transferToChild())
         .to.emit(Bond, "Approval")
-        .to.emit(ERC20Predicate, "LockedERC20").withArgs(Vault.address, Vault.address, Bond.address, value)
-        .to.emit(Bond, "Transfer").withArgs(Vault.address, ERC20Predicate.address, value)
+        .to.emit(ERC20Predicate, "LockedERC20").withArgs(RootVault.address, RootVault.address, Bond.address, value)
+        .to.emit(Bond, "Transfer").withArgs(RootVault.address, ERC20Predicate.address, value)
         .to.emit(StateSender, "StateSynced")
-        .to.emit(Vault, "TransferToChild").withArgs(owner.address, Bond.address, value);
+        .to.emit(RootVault, "TransferToChild").withArgs(owner.address, Bond.address, value);
 
-      expect(await Bond.balanceOf(Vault.address))
+      expect(await Bond.balanceOf(RootVault.address))
         .to.equal("0");
 
     });
 
     it("Should transfer all BOND to Child as anyone", async function () {
-      const {Bond, Vault, ERC20Predicate, StateSender, users} = await setup();
+      const {Bond, RootVault, ERC20Predicate, StateSender, users} = await setup();
       const value = "1000000000000000000000";
 
-      expect(await Bond.balanceOf(Vault.address))
+      expect(await Bond.balanceOf(RootVault.address))
         .to.equal(value);
 
-      await expect(users[0].Vault.transferToChild())
+      await expect(users[0].RootVault.transferToChild())
         .to.emit(Bond, "Approval")
-        .to.emit(ERC20Predicate, "LockedERC20").withArgs(Vault.address, Vault.address, Bond.address, value)
-        .to.emit(Bond, "Transfer").withArgs(Vault.address, ERC20Predicate.address, value)
+        .to.emit(ERC20Predicate, "LockedERC20").withArgs(RootVault.address, RootVault.address, Bond.address, value)
+        .to.emit(Bond, "Transfer").withArgs(RootVault.address, ERC20Predicate.address, value)
         .to.emit(StateSender, "StateSynced")
-        .to.emit(Vault, "TransferToChild").withArgs(users[0].address, Bond.address, value);
+        .to.emit(RootVault, "TransferToChild").withArgs(users[0].address, Bond.address, value);
 
-      expect(await Bond.balanceOf(Vault.address))
+      expect(await Bond.balanceOf(RootVault.address))
         .to.equal("0");
 
     });
   });
 });
 
-describe("Vault Layer2 tests", () => {
+describe("Vault Child Chain tests", () => {
   describe("Initialization tests", () => {
     it("Deployment should succeed and 1000 BOND should be in vault", async function () {
-      const {Bond, Layer2Vault} = await setup();
+      const {Bond, ChildVault} = await setup();
 
-      const vaultBalance = await Bond.balanceOf(Layer2Vault.address);
+      const vaultBalance = await Bond.balanceOf(ChildVault.address);
 
       expect(vaultBalance)
         .to.equal("1000000000000000000000");
@@ -148,44 +148,44 @@ describe("Vault Layer2 tests", () => {
     it("Should fail if no owner tries to set allowance", async function () {
       const {owner, users} = await setup();
 
-      await expect(users[0].Layer2Vault.setAllowance(owner.address, "1")).to.be.revertedWith(
+      await expect(users[0].ChildVault.setAllowance(owner.address, "1")).to.be.revertedWith(
         "Ownable: caller is not the owner"
       );
     });
 
     it("Should transferOwnership", async function () {
-      const {Layer2Vault, owner, users} = await setup();
+      const {ChildVault, owner, users} = await setup();
 
-      expect(await Layer2Vault.owner()).to.be.equal(owner.address);
+      expect(await ChildVault.owner()).to.be.equal(owner.address);
 
-      await expect(owner.Layer2Vault.transferOwnership(users[0].address))
-        .to.emit(Layer2Vault, "OwnershipTransferred");
+      await expect(owner.ChildVault.transferOwnership(users[0].address))
+        .to.emit(ChildVault, "OwnershipTransferred");
 
-      expect(await Layer2Vault.owner()).to.be.equal(users[0].address);
+      expect(await ChildVault.owner()).to.be.equal(users[0].address);
     });
   });
 
   describe("Events", () => {
     it("setAllowance works for owner and emits SetAllowance", async function () {
-      const {Layer2Vault, owner} = await setup();
+      const {ChildVault, owner} = await setup();
 
-      await expect(owner.Layer2Vault.setAllowance(owner.address, "1000000000000000000000"))
-        .to.emit(Layer2Vault, "SetAllowance");
+      await expect(owner.ChildVault.setAllowance(owner.address, "1000000000000000000000"))
+        .to.emit(ChildVault, "SetAllowance");
     });
   });
 
-  describe("Transfer to Layer 2 tests", () => {
+  describe("Transfer to Child Chain Tests", () => {
     it("transferToChild should revert", async function () {
-      const {Bond, Layer2Vault, owner} = await setup();
+      const {Bond, ChildVault, owner} = await setup();
       const value = "1000000000000000000000";
 
-      expect(await Bond.balanceOf(Layer2Vault.address))
+      expect(await Bond.balanceOf(ChildVault.address))
         .to.equal(value);
 
-      await expect(owner.Layer2Vault.transferToChild())
-        .to.be.revertedWith("Vault: deposit to layer2 must be enabled enabled");
+      await expect(owner.ChildVault.transferToChild())
+        .to.be.revertedWith("Vault: transfer to child chain is disabled");
 
-      expect(await Bond.balanceOf(Layer2Vault.address))
+      expect(await Bond.balanceOf(ChildVault.address))
         .to.equal(value);
 
     });
