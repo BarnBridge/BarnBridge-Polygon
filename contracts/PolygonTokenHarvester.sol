@@ -7,20 +7,25 @@ import "./matic/IRootChainManager.sol";
 import "./matic/IERC20ChildToken.sol";
 
 contract PolygonTokenHarvester is OwnableUpgradeable {
-    IRootChainManager rootChainManager;
     bool private _onRootChain;
+
+    address public rootChainManager;
+    mapping(address => uint) public lastWithdraw;
+    uint public withdrawCooldown;
 
     event SetAllowance(address indexed caller, address indexed spender, uint256 amount);
     event TransferToOwner(address indexed caller,  address indexed owner, address indexed token,  uint256 amount);
     event WithdrawOnRoot(address indexed caller);
     event WithdrawOnChild(address indexed caller, address indexed token,  uint256 amount);
 
-    function initialize(address _rootChainManager) initializer public {
+    function initialize(uint _withdrawCooldown, address _rootChainManager) initializer public {
         __Ownable_init();
+
+        setWithdrawCooldown(_withdrawCooldown);
 
         if (_rootChainManager != address(0)) {
             _onRootChain = true;
-            rootChainManager = IRootChainManager(_rootChainManager);
+            rootChainManager = _rootChainManager;
         } else {
             _onRootChain = false;
         }
@@ -42,9 +47,13 @@ contract PolygonTokenHarvester is OwnableUpgradeable {
         _;
     }
 
+    function setWithdrawCooldown(uint _withdrawCooldown) public onlyOwner {
+        withdrawCooldown = _withdrawCooldown;
+    }
+
     // Root Chain Related Functions
     function withdrawOnRoot(bytes memory _data) public onlyOnRoot {
-        rootChainManager.exit(_data);
+        IRootChainManager(rootChainManager).exit(_data);
 
         emit WithdrawOnRoot(_msgSender());
     }
@@ -65,6 +74,11 @@ contract PolygonTokenHarvester is OwnableUpgradeable {
     // Child Chain Related Functions
     function withdrawOnChild(address _childToken) public onlyOnChild {
         require(_childToken != address(0), "Harvester: child token address must be specified");
+
+        if (block.number < lastWithdraw[_childToken] + withdrawCooldown) {
+            return;
+        }
+        lastWithdraw[_childToken] = block.number;
 
         IERC20ChildToken erc20 = IERC20ChildToken(_childToken);
 

@@ -33,7 +33,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     const txResult = await execute(
       deploymentName,
       {from: owner},
-      "initialize", ethers.constants.AddressZero,
+      "initialize", cfg.withdrawCooldown, ethers.constants.AddressZero,
     );
     console.log(`executed initialize (tx: ${txResult.transactionHash}) with status ${txResult.status}`);
   }

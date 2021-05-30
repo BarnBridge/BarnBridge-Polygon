@@ -32,6 +32,7 @@ const setup = deployments.createFixture(async ({
 
   return {
     ...contracts,
+    cfg,
     users,
     owner: await setupUser(owner, contracts)
   };
@@ -39,13 +40,15 @@ const setup = deployments.createFixture(async ({
 
 describe("Harvester Root Chain Tests", () => {
   describe("Initialization tests", () => {
-    it("Deployment should succeed and owner be set", async function () {
-      const {Bond, RootHarvester, owner} = await setup();
+    it("Deployment should succeed and sane options should be set", async function () {
+      const {Bond, RootHarvester, MockRootChainManager, owner} = await setup();
 
       expect(await Bond.balanceOf(RootHarvester.address))
         .to.equal("0");
 
       expect(await RootHarvester.owner()).to.be.equal(owner.address);
+
+      expect(await RootHarvester.rootChainManager()).to.be.equal(MockRootChainManager.address);
     });
   });
 
@@ -53,9 +56,8 @@ describe("Harvester Root Chain Tests", () => {
     it("Should fail if random address tries to transferOwnership", async function () {
       const {users} = await setup();
 
-      await expect(users[0].RootHarvester.transferOwnership(users[0].address)).to.be.revertedWith(
-        "Ownable: caller is not the owner"
-      );
+      await expect(users[0].RootHarvester.transferOwnership(users[0].address))
+        .to.be.revertedWith("Ownable: caller is not the owner");
     });
 
     it("Should transferOwnership", async function () {
@@ -116,13 +118,45 @@ describe("Harvester Root Chain Tests", () => {
 
 describe("Child Chain Tests", () => {
   describe("Initialization Tests", () => {
-    it("Deployment should succeed and owner be set", async function () {
+    it("Deployment should succeed and sane options should be set", async function () {
       const {Bond, ChildHarvester, owner} = await setup();
 
       expect(await Bond.balanceOf(ChildHarvester.address))
         .to.equal("0");
 
       expect(await ChildHarvester.owner()).to.be.equal(owner.address);
+
+      expect(await ChildHarvester.rootChainManager()).to.be.equal(ethers.constants.AddressZero);
+    });
+  });
+
+  describe("Getters and Setters Tests", () => {
+    it("withdrawCooldown", async function () {
+      const {ChildHarvester, cfg, owner, users} = await setup();
+
+      expect(await ChildHarvester.withdrawCooldown())
+        .to.be.equal(cfg.withdrawCooldown);
+
+      const newCooldown = 4;
+
+      await owner.ChildHarvester.setWithdrawCooldown(newCooldown);
+      expect(await ChildHarvester.withdrawCooldown())
+        .to.be.equal(newCooldown);
+
+      await expect(users[0].ChildHarvester.setWithdrawCooldown(newCooldown))
+        .to.be.revertedWith("Ownable: caller is not the owner");
+
+      await expect(owner.ChildHarvester.setWithdrawCooldown(-1))
+        .to.be.reverted;
+    });
+  });
+
+  describe("Withdrawal Tests", () => {
+    it("withdrawOnChild", async function () {
+      const {Bond, ChildHarvester, users} = await setup();
+
+      // await expect(ChildHarvester.withdrawOnChild(Bond.address))
+      //   .to.emit(ChildHarvester, "WithdrawOnChild");
     });
   });
 
@@ -130,9 +164,8 @@ describe("Child Chain Tests", () => {
     it("Should fail withdrawOnRoot", async function () {
       const {users} = await setup();
 
-      await expect(users[0].ChildHarvester.withdrawOnRoot("0x00")).to.be.revertedWith(
-        "Harvester: should only be called on root chain"
-      );
+      await expect(users[0].ChildHarvester.withdrawOnRoot("0x00"))
+        .to.be.revertedWith("Harvester: should only be called on root chain");
     });
   });
 });

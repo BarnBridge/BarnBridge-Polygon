@@ -7,7 +7,7 @@ const deploymentName = "RootPolygonTokenHarvester";
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   // @ts-ignore
   const {deployments, getNamedAccounts, ethers} = hre;
-  const {deploy, execute, deterministic} = deployments;
+  const {execute, deterministic} = deployments;
   const cfg = config(hre);
 
   const {owner} = await getNamedAccounts();
@@ -24,16 +24,16 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     from: owner,
     args: [],
     log: true,
-    salt: salt,
+    salt: salt
   });
 
-  const deployResult = await deployer.deploy()
+  const deployResult = await deployer.deploy();
 
   if (deployResult.newlyDeployed) {
     const txResult = await execute(
       deploymentName,
       {from: owner},
-      "initialize", ((await deployments.get('MockRootChainManager')).address),
+      "initialize", 0, ((await deployments.get("MockRootChainManager")).address)
     );
     console.log(`executed initialize (tx: ${txResult.transactionHash}) with status ${txResult.status}`);
   }
