@@ -50,7 +50,7 @@ export function config(hre: HardhatRuntimeEnvironment): BBNetConfig {
       rootChainManager: addressZero,
       erc20Predicate: addressZero,
       stateSender: addressZero,
-      withdrawCooldown: 0,
+      withdrawCooldown: 10,
       extra: null
     }
     // 'matic': {
