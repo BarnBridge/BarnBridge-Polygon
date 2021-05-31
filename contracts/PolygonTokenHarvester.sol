@@ -3,11 +3,15 @@ pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+
 import "./ISmartYieldProvider.sol";
 import "./matic/IRootChainManager.sol";
 import "./matic/IERC20ChildToken.sol";
 
 contract PolygonTokenHarvester is OwnableUpgradeable {
+    using SafeERC20 for IERC20;
+
     bool private _onRootChain;
 
     address public rootChainManager;
@@ -67,7 +71,7 @@ contract PolygonTokenHarvester is OwnableUpgradeable {
         address owner = owner();
 
         uint256 amount = erc20.balanceOf(address(this));
-        erc20.transfer(owner, amount);
+        erc20.safeTransfer(owner, amount);
 
         emit TransferToOwner(_msgSender(), owner, _token, amount);
     }
