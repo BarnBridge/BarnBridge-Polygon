@@ -3,9 +3,13 @@ pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+
 import "./matic/IRootChainManager.sol";
 
 contract PolygonCommunityVault is OwnableUpgradeable {
+    using SafeERC20 for IERC20;
+
     IRootChainManager internal rootChainManager;
     address internal erc20Predicate;
 
@@ -30,7 +34,7 @@ contract PolygonCommunityVault is OwnableUpgradeable {
      }
 
     function setAllowance(address spender, uint amount) public onlyOwner {
-        IERC20(token).approve(spender, amount);
+        IERC20(token).safeApprove(spender, amount);
 
         emit SetAllowance(msg.sender, spender, amount);
     }
@@ -41,7 +45,7 @@ contract PolygonCommunityVault is OwnableUpgradeable {
         IERC20 erc20 = IERC20(token);
 
         uint256 amount = erc20.balanceOf(address(this));
-        erc20.approve(erc20Predicate, amount);
+        erc20.safeApprove(erc20Predicate, amount);
         rootChainManager.depositFor(address(this), token, abi.encode(amount));
 
         emit TransferToChild(msg.sender, token, amount);
