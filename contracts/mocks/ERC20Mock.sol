@@ -1,9 +1,14 @@
+// SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
-contract MockERC20 is ERC20 {
-    constructor() ERC20("MOCK", "MCK") {
-        _mint(msg.sender, 100*10**18);
+contract ERC20Mock is ERC20 {
+    constructor(string memory _name, string memory _symbol) ERC20(_name, _symbol) {
+    }
+
+    function mint(address _account, uint256 _amount) public {
+        _mint(_account, _amount);
     }
 }
+

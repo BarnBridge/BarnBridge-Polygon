@@ -28,7 +28,7 @@ export function config(hre: HardhatRuntimeEnvironment): BBNetConfig {
       rootChainManager: "0xBbD7cBFA79faee899Eaf900F13C9065bF03B1A74",
       erc20Predicate: "0xdD6596F2029e6233DEFfaCa316e6A95217d4Dc34",
       stateSender: "0xEAa852323826C71cd7920C3b4c007184234c3945",
-      withdrawCooldown: 2,
+      withdrawCooldown: 2000,
       extra: {
         layer2BondAddress: "0xebB83c1b86A27eb9e2523A2c117F1d656269dbAE"
       }

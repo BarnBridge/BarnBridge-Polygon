@@ -3,6 +3,7 @@ pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "./ISmartYieldProvider.sol";
 import "./matic/IRootChainManager.sol";
 import "./matic/IERC20ChildToken.sol";
 
@@ -47,7 +48,7 @@ contract PolygonTokenHarvester is OwnableUpgradeable {
         _;
     }
 
-    function setWithdrawCooldown(uint _withdrawCooldown) public onlyOwner {
+    function setWithdrawCooldown(uint _withdrawCooldown) public onlyOwner onlyOnChild {
         withdrawCooldown = _withdrawCooldown;
     }
 
@@ -63,7 +64,7 @@ contract PolygonTokenHarvester is OwnableUpgradeable {
 
         IERC20 erc20 = IERC20(_token);
 
-        address owner = OwnableUpgradeable.owner();
+        address owner = owner();
 
         uint256 amount = erc20.balanceOf(address(this));
         erc20.transfer(owner, amount);
@@ -75,6 +76,7 @@ contract PolygonTokenHarvester is OwnableUpgradeable {
     function withdrawOnChild(address _childToken) public onlyOnChild {
         require(_childToken != address(0), "Harvester: child token address must be specified");
 
+        // if cooldown has not passed, we just skip it
         if (block.number < lastWithdraw[_childToken] + withdrawCooldown) {
             return;
         }
@@ -86,5 +88,24 @@ contract PolygonTokenHarvester is OwnableUpgradeable {
         erc20.withdraw(amount);
 
         emit WithdrawOnChild(_msgSender(), _childToken, amount);
+    }
+
+    function claimAndWithdrawOnChild(address _syProvider) public onlyOnChild {
+        require(_syProvider != address(0), "Harvester: sy provider address must not be 0x0");
+
+        ISmartYieldProvider provider = ISmartYieldProvider(_syProvider);
+        address  underlying = provider.uToken();
+
+        provider.transferFees();
+        withdrawOnChild(underlying);
+    }
+
+    function claimAndWithdrawOnChildMulti(address[] memory _syProviders) public onlyOnChild {
+        uint count = _syProviders.length;
+        require(count > 0, "Harvester: need to specify sy providers for claim");
+
+        for (uint i=0; i<count; i++) {
+            claimAndWithdrawOnChild(_syProviders[i]);
+        }
     }
 }

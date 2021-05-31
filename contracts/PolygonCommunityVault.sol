@@ -35,7 +35,7 @@ contract PolygonCommunityVault is OwnableUpgradeable {
         emit SetAllowance(msg.sender, spender, amount);
     }
 
-    function transferToChild() public {
+    function transferToChild() public { // onlyOnRoot , maybe onlyOwner
         require(erc20Predicate != address(0), "Vault: transfer to child chain is disabled");
 
         IERC20 erc20 = IERC20(token);

@@ -30,12 +30,26 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const deployResult = await deployer.deploy()
 
   if (deployResult.newlyDeployed) {
-    const txResult = await execute(
+    let txResult = await execute(
       deploymentName,
       {from: owner},
       "initialize", cfg.withdrawCooldown, ethers.constants.AddressZero,
     );
     console.log(`executed initialize (tx: ${txResult.transactionHash}) with status ${txResult.status}`);
+
+    txResult = await execute(
+      "ChildMockSmartYieldProviderMOK",
+      {from: owner},
+      "setFeesOwner", deployer.address,
+    );
+    console.log(`executed setFeesOwner on SY MOK (tx: ${txResult.transactionHash} address: ${deployer.address}) with status ${txResult.status}`);
+
+    txResult = await execute(
+      "ChildMockSmartYieldProviderMCK",
+      {from: owner},
+      "setFeesOwner", deployer.address,
+    );
+    console.log(`executed setFeesOwner on SY MCK (tx: ${txResult.transactionHash} address: ${deployer.address}) with status ${txResult.status}`);
   }
 };
 

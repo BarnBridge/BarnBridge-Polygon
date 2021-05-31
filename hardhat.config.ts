@@ -3,6 +3,7 @@ import { HardhatUserConfig } from "hardhat/types";
 import "hardhat-deploy";
 import "@nomiclabs/hardhat-ethers";
 import "@nomiclabs/hardhat-waffle";
+import "solidity-coverage"
 import { node_url, accounts, ownerKeyHardhat } from "./utils/network";
 import { config as cfg } from "./utils/config";
 
