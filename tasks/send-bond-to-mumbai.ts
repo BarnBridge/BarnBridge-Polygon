@@ -1,0 +1,25 @@
+import { HardhatUserConfig, task } from 'hardhat/config';
+import "hardhat-deploy";
+import "@nomiclabs/hardhat-ethers";
+import { config } from "../utils/config";
+
+task("send-bond-to-mumbai", "Sends bond to mumbai from goerli")
+    .addParam("amount", "How much to send")
+    .setAction(async ({ amount }, hre) => {
+        const { ethers, deployments, getNamedAccounts, getUnnamedAccounts } = hre;
+        if (hre.network.name != "goerli") {
+            console.log("wrong network");
+            return;
+        }
+        const cfg = config(hre);
+        const { owner } = await getNamedAccounts();
+        const Bond = (await ethers.getContractAt("ERC20Mock", cfg.bondAddress, owner));
+        const RootVault = (await ethers.getContract("PolygonCommunityVault"))
+
+        const mintAmount = ethers.utils.parseUnits(amount, 18);
+        await Bond.mint(RootVault.address, mintAmount);
+        let tx = await RootVault.transferToChild({ gasLimit: 500000 });
+        console.log(`https://goerli.etherscan.io/tx/${tx.hash}`)
+    });
+
+module.exports = {};
