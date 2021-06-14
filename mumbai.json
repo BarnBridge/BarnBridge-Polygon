@@ -171,7 +171,7 @@
       ]
     },
     "PolygonTokenHarvester": {
-      "address": "0x70a40abC43Db72Fa86a5DCC12a2cFC89ddA2DD0c",
+      "address": "0x337CFC13aafc17Ed46aE58b0BB43c04E39054A5a",
       "abi": [
         {
           "anonymous": false,
@@ -443,6 +443,19 @@
             }
           ],
           "name": "withdrawOnChild",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "_childTokens",
+              "type": "address[]"
+            }
+          ],
+          "name": "withdrawOnChildMulti",
           "outputs": [],
           "stateMutability": "nonpayable",
           "type": "function"

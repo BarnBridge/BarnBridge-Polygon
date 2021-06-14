@@ -94,6 +94,15 @@ contract PolygonTokenHarvester is OwnableUpgradeable {
         emit WithdrawOnChild(_msgSender(), _childToken, amount);
     }
 
+    function withdrawOnChildMulti(address[] memory _childTokens) public onlyOnChild {
+        uint count = _childTokens.length;
+        require(count > 0, "Harvester: need to specify child tokens to withdraw");
+
+        for (uint i=0; i<count; i++) {
+            withdrawOnChild(_childTokens[i]);
+        }
+    }
+
     function claimAndWithdrawOnChild(address _syProvider) public onlyOnChild {
         require(_syProvider != address(0), "Harvester: sy provider address must not be 0x0");
 

@@ -11,6 +11,7 @@ import "./tasks/accounts";
 import "./tasks/send-bond-to-mumbai";
 import "./tasks/send-bond-to-goerli";
 import "./tasks/exit-bond-on-goerli";
+import "./tasks/send-multi-to-goerli";
 
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY || "";
 
@@ -50,15 +51,15 @@ const config: HardhatUserConfig = {
       deploy: ["deploy", "deploy-goerli"],
       url: node_url("goerli"),
       accounts: accounts("goerli"),
-      gasPrice: 500000000000,
-      gasMultiplier: 2
+      gasPrice: 6000000000000,
+      gasMultiplier: 2,
     },
     mumbai: {
       deploy: ["deploy", "deploy-mumbai"],
       url: node_url("mumbai"),
       accounts: accounts("mumbai"),
       gasPrice: 2000000000,
-      gasMultiplier: 1.5
+      gasMultiplier: 1.5,
     }
   },
   paths: {

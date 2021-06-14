@@ -115,11 +115,15 @@ describe("Harvester Root Chain Tests", () => {
           "Harvester: should only be called on child chain"
         );
 
-        await expect(users[0].RootHarvester.claimAndWithdrawOnChild(Bond.address)).to.be.revertedWith(
+        await expect(users[0].RootHarvester.withdrawOnChildMulti([Bond.address])).to.be.revertedWith(
           "Harvester: should only be called on child chain"
         );
 
         await expect(users[0].RootHarvester.claimAndWithdrawOnChild(Bond.address)).to.be.revertedWith(
+          "Harvester: should only be called on child chain"
+        );
+
+        await expect(users[0].RootHarvester.claimAndWithdrawOnChildMulti([Bond.address])).to.be.revertedWith(
           "Harvester: should only be called on child chain"
         );
       });
@@ -190,9 +194,9 @@ describe("Child Chain Tests", () => {
       expect(await ChildMockERC20MOK.balanceOf(ChildHarvester.address))
         .to.equal(amount);
 
-      // but should work after the cooldown passes
+      // but should work after the cooldown passes, and works with multi as well
       await mineBlocks(cfg.withdrawCooldown);
-      await expect(users[0].ChildHarvester.withdrawOnChild(ChildMockERC20MOK.address))
+      await expect(users[0].ChildHarvester.withdrawOnChildMulti([ChildMockERC20MOK.address]))
         .to.emit(ChildHarvester, "WithdrawOnChild")
         .withArgs(users[0].address, ChildMockERC20MOK.address, amount);
 

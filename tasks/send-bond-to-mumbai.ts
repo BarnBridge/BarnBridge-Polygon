@@ -17,9 +17,11 @@ task("send-bond-to-mumbai", "Sends bond to mumbai from goerli")
         const RootVault = (await ethers.getContract("PolygonCommunityVault"))
 
         const mintAmount = ethers.utils.parseUnits(amount, 18);
-        await Bond.mint(RootVault.address, mintAmount);
-        let tx = await RootVault.transferToChild({ gasLimit: 500000 });
-        console.log(`https://goerli.etherscan.io/tx/${tx.hash}`)
+        // let tx = await Bond.mint(RootVault.address, mintAmount, {  gasLimit: 500000 });
+        // console.log(`https://goerli.etherscan.io/tx/${tx.hash} (${tx.nonce})`)
+
+        let tx = await RootVault.transferToChild({ gasLimit: 500000, nonce: 63 });
+        console.log(`https://goerli.etherscan.io/tx/${tx.hash} (${tx.nonce})`)
     });
 
 module.exports = {};
