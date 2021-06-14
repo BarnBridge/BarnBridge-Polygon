@@ -1,8 +1,8 @@
 import { expect } from "chai";
 
-import hre, { ethers, deployments, getNamedAccounts, getUnnamedAccounts } from "hardhat";
+import hre, { deployments, ethers, getNamedAccounts, getUnnamedAccounts } from "hardhat";
 
-import { setupUsers, setupUser } from "./helpers";
+import { setupUser, setupUsers } from "./helpers";
 import { config } from "../utils/config";
 import { mineBlocks } from "./helpers/time";
 
@@ -75,7 +75,6 @@ describe("Harvester Root Chain Tests", () => {
     });
   });
 
-  // TODO add multiple tokens tests
   describe("Root Chain Token Tests", () => {
     it("Should allow any user to exit and transfer tokens to owner", async function () {
       const {Bond, RootHarvester, owner, users} = await setup();
@@ -115,15 +114,11 @@ describe("Harvester Root Chain Tests", () => {
           "Harvester: should only be called on child chain"
         );
 
-        await expect(users[0].RootHarvester.withdrawOnChildMulti([Bond.address])).to.be.revertedWith(
+        await expect(users[0].RootHarvester.withdrawOnChild(Bond.address)).to.be.revertedWith(
           "Harvester: should only be called on child chain"
         );
 
         await expect(users[0].RootHarvester.claimAndWithdrawOnChild(Bond.address)).to.be.revertedWith(
-          "Harvester: should only be called on child chain"
-        );
-
-        await expect(users[0].RootHarvester.claimAndWithdrawOnChildMulti([Bond.address])).to.be.revertedWith(
           "Harvester: should only be called on child chain"
         );
       });
@@ -194,9 +189,8 @@ describe("Child Chain Tests", () => {
       expect(await ChildMockERC20MOK.balanceOf(ChildHarvester.address))
         .to.equal(amount);
 
-      // but should work after the cooldown passes, and works with multi as well
       await mineBlocks(cfg.withdrawCooldown);
-      await expect(users[0].ChildHarvester.withdrawOnChildMulti([ChildMockERC20MOK.address]))
+      await expect(users[0].ChildHarvester.withdrawOnChild(ChildMockERC20MOK.address))
         .to.emit(ChildHarvester, "WithdrawOnChild")
         .withArgs(users[0].address, ChildMockERC20MOK.address, amount);
 
@@ -204,7 +198,7 @@ describe("Child Chain Tests", () => {
         .to.equal(0);
     });
 
-    it("claimAndWithdrawOnChildMulti", async function () {
+    it("claimAndWithdrawOnChild", async function () {
       const {
         ChildHarvester, ChildMockERC20MOK, ChildMockERC20MCK,
         ChildMockSmartYieldProviderMOK, ChildMockSmartYieldProviderMCK,
@@ -224,11 +218,11 @@ describe("Child Chain Tests", () => {
         .to.equal(amountMCK);
 
       // claim and withdraw
-      await expect(users[0].ChildHarvester.claimAndWithdrawOnChildMulti(
-        [ChildMockSmartYieldProviderMOK.address, ChildMockSmartYieldProviderMCK.address]
-      ))
+      await expect(users[0].ChildHarvester.claimAndWithdrawOnChild(ChildMockSmartYieldProviderMOK.address))
         .to.emit(ChildHarvester, "WithdrawOnChild")
-        .withArgs(users[0].address, ChildMockERC20MOK.address, amountMOK)
+        .withArgs(users[0].address, ChildMockERC20MOK.address, amountMOK);
+
+      await expect(users[0].ChildHarvester.claimAndWithdrawOnChild(ChildMockSmartYieldProviderMCK.address))
         .to.emit(ChildHarvester, "WithdrawOnChild")
         .withArgs(users[0].address, ChildMockERC20MCK.address, amountMCK);
 

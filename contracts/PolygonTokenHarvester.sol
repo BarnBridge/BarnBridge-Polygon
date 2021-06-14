@@ -57,7 +57,7 @@ contract PolygonTokenHarvester is OwnableUpgradeable {
     }
 
     // Root Chain Related Functions
-    function withdrawOnRoot(bytes memory _data) public onlyOnRoot {
+    function withdrawOnRoot(bytes calldata _data) public onlyOnRoot {
         IRootChainManager(rootChainManager).exit(_data);
 
         emit WithdrawOnRoot(_msgSender());
@@ -94,15 +94,6 @@ contract PolygonTokenHarvester is OwnableUpgradeable {
         emit WithdrawOnChild(_msgSender(), _childToken, amount);
     }
 
-    function withdrawOnChildMulti(address[] memory _childTokens) public onlyOnChild {
-        uint count = _childTokens.length;
-        require(count > 0, "Harvester: need to specify child tokens to withdraw");
-
-        for (uint i=0; i<count; i++) {
-            withdrawOnChild(_childTokens[i]);
-        }
-    }
-
     function claimAndWithdrawOnChild(address _syProvider) public onlyOnChild {
         require(_syProvider != address(0), "Harvester: sy provider address must not be 0x0");
 
@@ -111,14 +102,5 @@ contract PolygonTokenHarvester is OwnableUpgradeable {
 
         provider.transferFees();
         withdrawOnChild(underlying);
-    }
-
-    function claimAndWithdrawOnChildMulti(address[] memory _syProviders) public onlyOnChild {
-        uint count = _syProviders.length;
-        require(count > 0, "Harvester: need to specify sy providers for claim");
-
-        for (uint i=0; i<count; i++) {
-            claimAndWithdrawOnChild(_syProviders[i]);
-        }
     }
 }
