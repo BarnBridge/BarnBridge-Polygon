@@ -19,9 +19,9 @@ contract PolygonTokenHarvester is OwnableUpgradeable {
     uint public withdrawCooldown;
 
     event SetAllowance(address indexed caller, address indexed spender, uint256 amount);
-    event TransferToOwner(address indexed caller,  address indexed owner, address indexed token,  uint256 amount);
+    event TransferToOwner(address indexed caller, address indexed owner, address indexed token, uint256 amount);
     event WithdrawOnRoot(address indexed caller);
-    event WithdrawOnChild(address indexed caller, address indexed token,  uint256 amount);
+    event WithdrawOnChild(address indexed caller, address indexed token, uint256 amount);
 
     function initialize(uint _withdrawCooldown, address _rootChainManager) initializer public {
         __Ownable_init();
@@ -34,7 +34,7 @@ contract PolygonTokenHarvester is OwnableUpgradeable {
         } else {
             _onRootChain = false;
         }
-     }
+    }
 
     modifier onlyOnRoot {
         require(
@@ -57,10 +57,14 @@ contract PolygonTokenHarvester is OwnableUpgradeable {
     }
 
     // Root Chain Related Functions
-    function withdrawOnRoot(bytes calldata _data) public onlyOnRoot {
-        IRootChainManager(rootChainManager).exit(_data);
+    function withdrawOnRoot(bytes memory _data) public onlyOnRoot returns (bytes memory) {
+        //        (bool success, bytes memory returnData) = IRootChainManager(rootChainManager).exit(_data);
+        (bool success, bytes memory returnData) = rootChainManager.call(_data);
+        require(success, string(returnData));
 
         emit WithdrawOnRoot(_msgSender());
+
+        return returnData;
     }
 
     function transferToOwner(address _token) public onlyOnRoot {
@@ -98,7 +102,7 @@ contract PolygonTokenHarvester is OwnableUpgradeable {
         require(_syProvider != address(0), "Harvester: sy provider address must not be 0x0");
 
         ISmartYieldProvider provider = ISmartYieldProvider(_syProvider);
-        address  underlying = provider.uToken();
+        address underlying = provider.uToken();
 
         provider.transferFees();
         withdrawOnChild(underlying);

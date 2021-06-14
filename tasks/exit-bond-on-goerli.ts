@@ -30,15 +30,15 @@ task("exit-bond-on-goerli", "Sends bond to mumbai from goerli")
 
         const accounts = await ethers.getSigners();
 
-        let tx = await accounts[0].sendTransaction({
-            from: owner,
-            to: "0xbbd7cbfa79faee899eaf900f13c9065bf03b1a74",
-            data: exitCalldata.data
-        })
+        // let tx = await accounts[0].sendTransaction({
+        //     from: owner,
+        //     to: "0xbbd7cbfa79faee899eaf900f13c9065bf03b1a74",
+        //     data: exitCalldata.data
+        // })
 
         // const justPayload = exitCalldata.data.replace("0x3805550f", "0x");
         // console.log(justPayload);
-        // let tx = await Harvester.withdrawOnRoot(justPayload, { gasLimit: 1000000 });
+        let tx = await Harvester.withdrawOnRoot(exitCalldata, { gasLimit: 1000000 });
 
         console.log(`https://goerli.etherscan.io/tx/${tx.hash}`)
 

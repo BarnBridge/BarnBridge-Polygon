@@ -851,7 +851,7 @@
       ]
     },
     "PolygonTokenHarvester": {
-      "address": "0x337CFC13aafc17Ed46aE58b0BB43c04E39054A5a",
+      "address": "0x1e0c8BD3EFb1EaF7b9537226cA058951210a55B7",
       "abi": [
         {
           "anonymous": false,
@@ -975,19 +975,6 @@
             }
           ],
           "name": "claimAndWithdrawOnChild",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "address[]",
-              "name": "_syProviders",
-              "type": "address[]"
-            }
-          ],
-          "name": "claimAndWithdrawOnChildMulti",
           "outputs": [],
           "stateMutability": "nonpayable",
           "type": "function"
@@ -1130,26 +1117,19 @@
         {
           "inputs": [
             {
-              "internalType": "address[]",
-              "name": "_childTokens",
-              "type": "address[]"
-            }
-          ],
-          "name": "withdrawOnChildMulti",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
               "internalType": "bytes",
               "name": "_data",
               "type": "bytes"
             }
           ],
           "name": "withdrawOnRoot",
-          "outputs": [],
+          "outputs": [
+            {
+              "internalType": "bytes",
+              "name": "",
+              "type": "bytes"
+            }
+          ],
           "stateMutability": "nonpayable",
           "type": "function"
         }

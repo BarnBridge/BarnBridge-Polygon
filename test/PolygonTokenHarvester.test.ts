@@ -83,7 +83,7 @@ describe("Harvester Root Chain Tests", () => {
       expect(await Bond.balanceOf(RootHarvester.address))
         .to.equal("0");
 
-      await expect(users[0].RootHarvester.withdrawOnRoot("0x00"))
+      await expect(users[0].RootHarvester.withdrawOnRoot("0x3805550f000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000"))
         .to.emit(RootHarvester, "WithdrawOnRoot").withArgs(users[0].address);
 
       // transfer some funds manually to the Harvester
