@@ -58,7 +58,6 @@ contract PolygonTokenHarvester is OwnableUpgradeable {
 
     // Root Chain Related Functions
     function withdrawOnRoot(bytes memory _data) public onlyOnRoot returns (bytes memory) {
-        //        (bool success, bytes memory returnData) = IRootChainManager(rootChainManager).exit(_data);
         (bool success, bytes memory returnData) = rootChainManager.call(_data);
         require(success, string(returnData));
 
@@ -78,6 +77,13 @@ contract PolygonTokenHarvester is OwnableUpgradeable {
         erc20.safeTransfer(owner, amount);
 
         emit TransferToOwner(_msgSender(), owner, _token, amount);
+    }
+
+    function withdrawAndTransferToOwner(bytes memory _data, address _token) public onlyOnRoot returns (bytes memory) {
+        bytes memory returnData =  withdrawOnRoot(_data);
+        transferToOwner(_token);
+
+        return returnData;
     }
 
     // Child Chain Related Functions

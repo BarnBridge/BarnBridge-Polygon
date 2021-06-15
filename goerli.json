@@ -851,7 +851,7 @@
       ]
     },
     "PolygonTokenHarvester": {
-      "address": "0x1e0c8BD3EFb1EaF7b9537226cA058951210a55B7",
+      "address": "0xf81412E94bD28a740aeD456DeC862Df075CEb3C0",
       "abi": [
         {
           "anonymous": false,
@@ -1085,6 +1085,30 @@
           ],
           "name": "transferToOwner",
           "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "bytes",
+              "name": "_data",
+              "type": "bytes"
+            },
+            {
+              "internalType": "address",
+              "name": "_token",
+              "type": "address"
+            }
+          ],
+          "name": "withdrawAndTransferToOwner",
+          "outputs": [
+            {
+              "internalType": "bytes",
+              "name": "",
+              "type": "bytes"
+            }
+          ],
           "stateMutability": "nonpayable",
           "type": "function"
         },

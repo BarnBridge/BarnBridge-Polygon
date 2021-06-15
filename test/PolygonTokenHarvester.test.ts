@@ -106,6 +106,34 @@ describe("Harvester Root Chain Tests", () => {
         .to.equal(beforeBalance);
     });
 
+    it("Should allow any user to withdrawAndTransferToOwner", async function () {
+      const {Bond, RootHarvester, owner, users} = await setup();
+      const value = "1000000000000000000000";
+
+      // transfer some funds manually to the Harvester
+      const beforeBalance = await Bond.balanceOf(owner.address);
+      await owner.Bond.transfer(RootHarvester.address, value).then((tx: { wait: () => any; }) => tx.wait());
+
+      expect(await Bond.balanceOf(RootHarvester.address))
+        .to.equal(value);
+
+      await expect(users[0].RootHarvester.withdrawAndTransferToOwner(
+        "0x3805550f000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000",
+        Bond.address,
+      ))
+        .to.emit(RootHarvester, "WithdrawOnRoot").withArgs(users[0].address)
+        .to.emit(RootHarvester, "TransferToOwner")
+        .withArgs(users[0].address, owner.address, Bond.address, value)
+        .to.emit(Bond, "Transfer")
+        .withArgs(RootHarvester.address, owner.address, value);
+
+      expect(await Bond.balanceOf(RootHarvester.address))
+        .to.equal("0");
+
+      expect(await Bond.balanceOf(owner.address))
+        .to.equal(beforeBalance);
+    });
+
     describe("Failing Child Function on Root Chain Tests", () => {
       it("Should fail calling child only functions on root chain", async function () {
         const {Bond, users} = await setup();
