@@ -343,7 +343,7 @@
       ]
     },
     "ChildMockERC20MOK": {
-      "address": "0xa162Db9eC78288eF31b5C591889cA4aB4a36C83F",
+      "address": "0x48a399f3736182d73f2752c8fbbf594333652c63",
       "abi": [
         {
           "inputs": [
@@ -683,7 +683,7 @@
       ]
     },
     "PolygonCommunityVault": {
-      "address": "0x7F33bA1355ae21383815f793d00ef36158692CA1",
+      "address": "0x5aFFF8eC52EF31603A512581b50d638D32925443",
       "abi": [
         {
           "anonymous": false,
@@ -851,7 +851,7 @@
       ]
     },
     "PolygonTokenHarvester": {
-      "address": "0x1B734Ba62A945b77C21060dd0971816f2a650437",
+      "address": "0xf70f351747b54e685B1570F720A7516Bc32462FE",
       "abi": [
         {
           "anonymous": false,

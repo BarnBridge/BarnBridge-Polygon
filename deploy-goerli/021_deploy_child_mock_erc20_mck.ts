@@ -18,7 +18,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     contract: "ERC20ChildTokenMock",
     from: owner,
     args: ["MOCK2", "MCK"],
-    log: true
+    log: true,
   });
 
   if (deployResult.newlyDeployed) {
@@ -35,3 +35,4 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 export default func;
 
 func.tags = [deploymentName];
+// func.skip = () => Promise.resolve(true)

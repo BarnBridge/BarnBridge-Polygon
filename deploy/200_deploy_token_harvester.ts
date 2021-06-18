@@ -25,13 +25,13 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     salt: salt,
   });
 
-  const deployResult = await deployer.deploy()
+  const deployResult = await deployer.deploy();
 
   if (deployResult.newlyDeployed) {
     const txResult = await execute(
       deploymentName,
       {from: owner},
-      "initialize", cfg.withdrawCooldown, cfg.rootChainManager,
+      "initialize", cfg.withdrawCooldown, cfg.rootChainManager
     );
     console.log(`executed initialize (tx: ${txResult.transactionHash}) with status ${txResult.status}`);
   }

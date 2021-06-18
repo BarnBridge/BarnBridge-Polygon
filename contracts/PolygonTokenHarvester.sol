@@ -71,12 +71,12 @@ contract PolygonTokenHarvester is OwnableUpgradeable {
 
         IERC20 erc20 = IERC20(_token);
 
-        address owner = owner();
+        address to = owner();
 
         uint256 amount = erc20.balanceOf(address(this));
-        erc20.safeTransfer(owner, amount);
+        erc20.safeTransfer(to, amount);
 
-        emit TransferToOwner(_msgSender(), owner, _token, amount);
+        emit TransferToOwner(_msgSender(), to, _token, amount);
     }
 
     function withdrawAndTransferToOwner(bytes memory _data, address _token) public onlyOnRoot returns (bytes memory) {

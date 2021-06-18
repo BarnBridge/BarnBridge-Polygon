@@ -34,3 +34,4 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 export default func;
 
 func.tags = [deploymentName];
+// func.skip = () => Promise.resolve(true)
