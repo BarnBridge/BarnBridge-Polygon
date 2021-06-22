@@ -67,9 +67,9 @@ describe("Polygon DAO Root Chain Tests", () => {
       // setFxRootTunnel
       await ChildDAO.setFxRootTunnel(RootDAO.address);
 
-      const amount = "1000000000000000000001";
-      await ChildMockERC20MOK.mint(RootDAO.address, amount);
-      expect(await ChildMockERC20MOK.balanceOf(RootDAO.address))
+      const amount = "1000000000000000000000";
+      await ChildMockERC20MOK.mint(ChildDAO.address, amount);
+      expect(await ChildMockERC20MOK.balanceOf(ChildDAO.address))
         .to.equal(amount);
 
       // encode addr + sig + calldata
@@ -87,9 +87,6 @@ describe("Polygon DAO Root Chain Tests", () => {
       // receive on child and execute
       await expect(ChildDAO.processMessageFromRootTest(0, RootDAO.address, encoded))
         .to.not.be.reverted;
-
-      // call addr with sig + calldata
-
     });
   });
 
