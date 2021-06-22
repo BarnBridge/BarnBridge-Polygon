@@ -119,7 +119,7 @@ describe("Harvester Root Chain Tests", () => {
 
       await expect(users[0].RootHarvester.withdrawAndTransferToOwner(
         "0x3805550f000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000",
-        Bond.address,
+        Bond.address
       ))
         .to.emit(RootHarvester, "WithdrawOnRoot").withArgs(users[0].address)
         .to.emit(RootHarvester, "TransferToOwner")
@@ -133,23 +133,23 @@ describe("Harvester Root Chain Tests", () => {
       expect(await Bond.balanceOf(owner.address))
         .to.equal(beforeBalance);
     });
+  });
 
-    describe("Failing Child Function on Root Chain Tests", () => {
-      it("Should fail calling child only functions on root chain", async function () {
-        const {Bond, users} = await setup();
+  describe("Failing Child Function on Root Chain Tests", () => {
+    it("Should fail calling child only functions on root chain", async function () {
+      const {Bond, users} = await setup();
 
-        await expect(users[0].RootHarvester.withdrawOnChild(Bond.address)).to.be.revertedWith(
-          "Harvester: should only be called on child chain"
-        );
+      await expect(users[0].RootHarvester.withdrawOnChild(Bond.address)).to.be.revertedWith(
+        "Harvester: should only be called on child chain"
+      );
 
-        await expect(users[0].RootHarvester.withdrawOnChild(Bond.address)).to.be.revertedWith(
-          "Harvester: should only be called on child chain"
-        );
+      await expect(users[0].RootHarvester.withdrawOnChild(Bond.address)).to.be.revertedWith(
+        "Harvester: should only be called on child chain"
+      );
 
-        await expect(users[0].RootHarvester.claimAndWithdrawOnChild(Bond.address)).to.be.revertedWith(
-          "Harvester: should only be called on child chain"
-        );
-      });
+      await expect(users[0].RootHarvester.claimAndWithdrawOnChild(Bond.address)).to.be.revertedWith(
+        "Harvester: should only be called on child chain"
+      );
     });
   });
 });
