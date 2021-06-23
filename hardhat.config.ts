@@ -36,6 +36,9 @@ const config: HardhatUserConfig = {
         url: node_url("goerli"),
         blockNumber: 4823788
       },
+      companionNetworks: {
+        l1: 'hardhat',
+      },
       accounts: [
         {
           privateKey: ownerKeyHardhat(),
@@ -64,6 +67,9 @@ const config: HardhatUserConfig = {
       accounts: accounts("mumbai"),
       gasPrice: 2000000000,
       gasMultiplier: 1.5,
+      companionNetworks: {
+        l1: 'goerli',
+      },
     }
   },
   paths: {

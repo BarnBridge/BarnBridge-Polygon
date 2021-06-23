@@ -59,8 +59,8 @@ export function config(hre: HardhatRuntimeEnvironment): BBNetConfig {
       rootChainManager: addressZero,
       erc20Predicate: addressZero,
       stateSender: addressZero,
-      checkpointManger: "",
-      fxRoot: "",
+      checkpointManger: "0x2890bA17EfE978480615e330ecB65333b880928e",
+      fxRoot: "0x3d1d3E34f7fB6D26245E6640E1c50710eFFf15bA",
       fxChild: "0xCf73231F28B7331BBe3124B907840A94851f9f11",
       withdrawCooldown: 10,
       extra: null

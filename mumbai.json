@@ -3,7 +3,7 @@
   "chainId": "80001",
   "contracts": {
     "PolygonCommunityVault": {
-      "address": "0x5aFFF8eC52EF31603A512581b50d638D32925443",
+      "address": "0x25B1A87b85354a6F15265b5B327d0AAAb281C08F",
       "abi": [
         {
           "anonymous": false,
@@ -171,7 +171,7 @@
       ]
     },
     "PolygonTokenHarvester": {
-      "address": "0xf70f351747b54e685B1570F720A7516Bc32462FE",
+      "address": "0x578138eB831910F7d6A72BE93BFE59AaFd7B2B62",
       "abi": [
         {
           "anonymous": false,
