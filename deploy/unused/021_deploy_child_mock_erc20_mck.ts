@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { DeployFunction } from "hardhat-deploy/types";
-import { config } from "../utils/config";
+import { config } from "../../utils/config";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 
 const deploymentName = "ChildMockERC20MCK";

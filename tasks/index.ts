@@ -7,3 +7,4 @@ import "./send-multi-to-goerli";
 import "./sy-set-fees-owner";
 import "./send-usdc-from-sy-to-goerli";
 import "./sy-generate-fees";
+import "./tunnel-transfer-from-goerli";
