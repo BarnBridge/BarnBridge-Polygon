@@ -6,16 +6,9 @@ import "@nomiclabs/hardhat-waffle";
 import "solidity-coverage"
 import "@tenderly/hardhat-tenderly";
 import { node_url, accounts, ownerKeyHardhat } from "./utils/network";
-import { config as cfg } from "./utils/config";
 
-import "./tasks/accounts";
-import "./tasks/send-bond-to-mumbai";
-import "./tasks/send-bond-to-goerli";
-import "./tasks/exit-bond-on-goerli";
-import "./tasks/send-multi-to-goerli";
-import "./tasks/sy-set-fees-owner";
-import "./tasks/send-usdc-from-sy-to-goerli";
-import "./tasks/sy-generate-fees";
+import "./tasks";
+
 
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY || "";
 

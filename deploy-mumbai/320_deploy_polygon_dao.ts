@@ -4,6 +4,8 @@ import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployOptions } from "hardhat-deploy/dist/types";
 
 const deploymentName = "PolygonDAO";
+const l1deploymentName = "PolygonDAORoot";
+const l2deploymentName = "PolygonDAOChild";
 
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   // @ts-ignore
@@ -11,8 +13,8 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   // @ts-ignore
   const {deployments: l2deployments, getNamedAccounts, ethers} = hre;
 
-  const {deploy: l1deploy, fetchIfDifferent: l1FetchIfDifferent} = l1deployments;
-  const {deploy: l2deploy, fetchIfDifferent: l2FetchIfDifferent} = l2deployments;
+  const {deploy: l1deploy, execute: l1execute, fetchIfDifferent: l1FetchIfDifferent} = l1deployments;
+  const {deploy: l2deploy, execute: l2execute, fetchIfDifferent: l2FetchIfDifferent} = l2deployments;
 
   const cfg = config(hre);
 
@@ -23,28 +25,43 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const daoRootOptions: DeployOptions = {
     from: owner,
     args: [cfg.checkpointManger, cfg.fxRoot],
-    log: true,
+    log: true
   };
 
   const daoChildOptions: DeployOptions = {
     from: owner,
     args: [cfg.fxChild],
-    log: true,
+    log: true
   };
 
-  console.log(await l1FetchIfDifferent("PolygonDAORoot", daoRootOptions));
-  console.log(await l2FetchIfDifferent("PolygonDAOChild", daoChildOptions));
-
-  const {differences: l1diff} = await l1FetchIfDifferent("PolygonDAORoot", daoRootOptions);
-  const {differences: l2diff} = await l2FetchIfDifferent("PolygonDAOChild", daoChildOptions);
+  const {differences: l1diff} = await l1FetchIfDifferent(l1deploymentName, daoRootOptions);
+  const {differences: l2diff} = await l2FetchIfDifferent(l2deploymentName, daoChildOptions);
 
   const redeploy = l1diff || l2diff;
 
-  if (!redeploy) {
-    console.log("force redeploying dao tunnels because one contract changed");
+  if (redeploy) {
+    console.log("force redeploying dao tunnels because at least one contract changed");
 
-    await l1deploy("PolygonDAORoot", daoRootOptions);
-    await l2deploy("PolygonDAOChild", daoChildOptions);
+    const l1deployResult = await l1deploy(l1deploymentName, daoRootOptions);
+    const l2deployResult = await l2deploy(l2deploymentName, daoChildOptions);
+
+    if (l1deployResult.newlyDeployed && l2deployResult.newlyDeployed) {
+      let txResult = await l1execute(
+        l1deploymentName,
+        {from: owner},
+        "setFxChildTunnel", l2deployResult.address
+      );
+      console.log(`executed setFxChildTunnel (tx: ${txResult.transactionHash}) with status ${txResult.status}`);
+
+      txResult = await l2execute(
+        l2deploymentName,
+        {from: owner},
+        "setFxRootTunnel", l1deployResult.address
+      );
+      console.log(`executed setFxRootTunnel (tx: ${txResult.transactionHash}) with status ${txResult.status}`);
+    } else {
+      console.log("at least one contract was previously deployed, you should try 'npx hardhat --network XXX redeploy-polygon-dao`");
+    }
   }
   //
   // const deployResult = await l1deploy(deploymentName, {
