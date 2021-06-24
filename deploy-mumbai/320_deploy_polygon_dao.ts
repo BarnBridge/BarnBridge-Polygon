@@ -34,35 +34,27 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     log: true
   };
 
-  const {differences: l1diff} = await l1FetchIfDifferent(l1deploymentName, daoRootOptions);
-  const {differences: l2diff} = await l2FetchIfDifferent(l2deploymentName, daoChildOptions);
+  const l1deployResult = await l1deploy(l1deploymentName, daoRootOptions);
+  const l2deployResult = await l2deploy(l2deploymentName, daoChildOptions);
 
-  const redeploy = l1diff || l2diff;
+  if (l1deployResult.newlyDeployed && l2deployResult.newlyDeployed) {
+    let txResult = await l1execute(
+      l1deploymentName,
+      {from: owner},
+      "setFxChildTunnel", l2deployResult.address
+    );
+    console.log(`executed setFxChildTunnel (tx: ${txResult.transactionHash}) with status ${txResult.status}`);
 
-  if (redeploy) {
-    console.log("force redeploying dao tunnels because at least one contract changed");
-
-    const l1deployResult = await l1deploy(l1deploymentName, daoRootOptions);
-    const l2deployResult = await l2deploy(l2deploymentName, daoChildOptions);
-
-    if (l1deployResult.newlyDeployed && l2deployResult.newlyDeployed) {
-      let txResult = await l1execute(
-        l1deploymentName,
-        {from: owner},
-        "setFxChildTunnel", l2deployResult.address
-      );
-      console.log(`executed setFxChildTunnel (tx: ${txResult.transactionHash}) with status ${txResult.status}`);
-
-      txResult = await l2execute(
-        l2deploymentName,
-        {from: owner},
-        "setFxRootTunnel", l1deployResult.address
-      );
-      console.log(`executed setFxRootTunnel (tx: ${txResult.transactionHash}) with status ${txResult.status}`);
-    } else {
-      console.log("at least one contract was previously deployed, you should try 'npx hardhat --network XXX redeploy-polygon-dao`");
-    }
+    txResult = await l2execute(
+      l2deploymentName,
+      {from: owner},
+      "setFxRootTunnel", l1deployResult.address
+    );
+    console.log(`executed setFxRootTunnel (tx: ${txResult.transactionHash}) with status ${txResult.status}`);
+  } else if (l1deployResult.newlyDeployed || l2deployResult.newlyDeployed) {
+    console.log("at least one contract was previously deployed, you should try 'npx hardhat --network XXX redeploy-polygon-dao`");
   }
+
   //
   // const deployResult = await l1deploy(deploymentName, {
   //   from: owner,
