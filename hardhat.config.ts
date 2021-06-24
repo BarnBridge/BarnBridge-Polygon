@@ -24,7 +24,7 @@ const config: HardhatUserConfig = {
   },
   networks: {
     hardhat: {
-      deploy: ["deploy", "deploy-testnet"],
+      deploy: ["deploy/common", "deploy/testnet"],
       forking: {
         url: node_url("goerli"),
         blockNumber: 4823788
@@ -48,7 +48,7 @@ const config: HardhatUserConfig = {
       ]
     },
     goerli: {
-      deploy: ["deploy", "deploy-goerli"],
+      deploy: ["deploy/common", "deploy/l1"],
       url: node_url("goerli"),
       accounts: accounts("goerli"),
       gas: "auto",
@@ -56,7 +56,7 @@ const config: HardhatUserConfig = {
       gasMultiplier: 4,
     },
     mumbai: {
-      deploy: ["deploy", "deploy-mumbai"],
+      deploy: ["deploy/common", "deploy/l2"],
       url: node_url("mumbai"),
       accounts: accounts("mumbai"),
       gas: "auto",

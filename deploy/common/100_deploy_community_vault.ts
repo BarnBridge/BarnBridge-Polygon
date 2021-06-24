@@ -1,8 +1,8 @@
 import { DeployFunction } from "hardhat-deploy/types";
-import { config } from "../utils/config";
+import { config } from "../../utils/config";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 
-const deploymentName = "PolygonTokenHarvester";
+const deploymentName = "PolygonCommunityVault";
 
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   // @ts-ignore
@@ -15,7 +15,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   console.log("deploy:", deploymentName);
 
   // change salt to force new deployment without code changes
-  const seed = cfg.seed + "harvester";
+  const seed = cfg.seed + "vault";
   const salt = ethers.utils.sha256(ethers.utils.toUtf8Bytes(seed));
 
   const deployer = await deterministic(deploymentName, {
@@ -25,13 +25,13 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     salt: salt,
   });
 
-  const deployResult = await deployer.deploy();
+  const deployResult = await deployer.deploy()
 
   if (deployResult.newlyDeployed) {
     const txResult = await execute(
       deploymentName,
       {from: owner},
-      "initialize", cfg.withdrawCooldown, cfg.rootChainManager
+      "initialize", cfg.bondAddress, cfg.rootChainManager, cfg.erc20Predicate,
     );
     console.log(`executed initialize (tx: ${txResult.transactionHash}) with status ${txResult.status}`);
   }

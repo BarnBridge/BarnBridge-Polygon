@@ -26,7 +26,7 @@ export function config(hre: HardhatRuntimeEnvironment): BBNetConfig {
   const cfg = {
     "hardhat": {
       path: "deploy-testnet",
-      seed: "dev02",
+      seed: "dev03",
       bondAddress: "0xd7d55Fd7763A356aF99f17C9d6c21d933bC2e2F1",
       rootChainManager: "0xBbD7cBFA79faee899Eaf900F13C9065bF03B1A74",
       erc20Predicate: "0xdD6596F2029e6233DEFfaCa316e6A95217d4Dc34",

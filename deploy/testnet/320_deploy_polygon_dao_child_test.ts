@@ -1,26 +1,26 @@
 import { DeployFunction } from "hardhat-deploy/types";
-import { config } from "../utils/config";
+import { config } from "../../utils/config";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 
-const deploymentName = "ChildMockSmartYieldProviderMOK";
+const deploymentName = "PolygonDAOChildTest";
 
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   // @ts-ignore
-  const {deployments, getNamedAccounts} = hre;
-  const {deploy} = deployments;
+  const {deployments, getNamedAccounts, ethers} = hre;
+  // @ts-ignore
+  const l1deployments = hre.companionNetworks['l1'].deployments
+  const l1deploy = l1deployments.deploy;
   const cfg = config(hre);
 
   const {owner} = await getNamedAccounts();
 
   console.log("deploy-testnet:", deploymentName);
 
-  await deploy(deploymentName, {
-    contract: "SmartYieldProvider",
+  await l1deploy(deploymentName, {
     from: owner,
-    args: [((await deployments.get("ChildMockERC20MOK")).address)],
-    log: true,
+    args: [owner], // set to owner so we can call it
+    log: true
   });
-
 };
 
 export default func;

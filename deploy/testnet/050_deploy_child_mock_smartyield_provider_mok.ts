@@ -1,8 +1,8 @@
 import { DeployFunction } from "hardhat-deploy/types";
-import { config } from "../utils/config";
+import { config } from "../../utils/config";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 
-const deploymentName = "ChildMockSmartYieldProviderMCK";
+const deploymentName = "ChildMockSmartYieldProviderMOK";
 
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   // @ts-ignore
@@ -17,7 +17,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   await deploy(deploymentName, {
     contract: "SmartYieldProvider",
     from: owner,
-    args: [((await deployments.get("ChildMockERC20MCK")).address)],
+    args: [((await deployments.get("ChildMockERC20MOK")).address)],
     log: true,
   });
 

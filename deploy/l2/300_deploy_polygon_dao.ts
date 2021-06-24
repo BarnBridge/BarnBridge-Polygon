@@ -1,5 +1,5 @@
 import { DeployFunction } from "hardhat-deploy/types";
-import { config } from "../utils/config";
+import { config } from "../../utils/config";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployOptions } from "hardhat-deploy/dist/types";
 
@@ -20,7 +20,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   const {owner} = await getNamedAccounts();
 
-  console.log("deploy:", deploymentName);
+  console.log("deploy-l2:", deploymentName);
 
   const daoRootOptions: DeployOptions = {
     from: owner,

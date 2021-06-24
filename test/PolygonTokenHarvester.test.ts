@@ -20,7 +20,7 @@ const setup = deployments.createFixture(async ({
   const {owner} = await getNamedAccounts();
 
   const contracts = {
-    RootHarvester: (await ethers.getContract("RootPolygonTokenHarvester")),
+    RootHarvester: (await ethers.getContract("RootPolygonTokenHarvesterTest")),
     ChildHarvester: (await ethers.getContract("ChildPolygonTokenHarvester")),
     Bond: (await ethers.getContractAt("IERC20", cfg.bondAddress, owner)),
     MockRootChainManager: (await ethers.getContract("MockRootChainManager")),
