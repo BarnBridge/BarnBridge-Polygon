@@ -13,6 +13,8 @@ contract PolygonDAOChild is FxBaseChildTunnel, Ownable {
 
     constructor(address _fxChild) FxBaseChildTunnel(_fxChild) {}
 
+    receive() external payable {}
+
     function _processMessageFromRoot(
         uint256 _stateId,
         address _sender,
@@ -22,9 +24,9 @@ contract PolygonDAOChild is FxBaseChildTunnel, Ownable {
         latestRootMessageSender = _sender;
         latestData = _data;
 
-        (address target, bytes memory payload) = abi.decode(_data, (address, bytes));
+        (address target, uint256 value, bytes memory payload) = abi.decode(_data, (address, uint256, bytes));
 
-        (bool success, bytes memory result) = target.call(payload);
+        (bool success, bytes memory result) = target.call{value : value}(payload);
         if (!success) {
             // Next 5 lines from https://ethereum.stackexchange.com/a/83577
             if (result.length < 68) revert();

@@ -21,7 +21,7 @@ task("tunnel-transfer-from-goerli", "Sends bond to mumbai from goerli")
 
     const tx = await l1deployments.execute("PolygonDAORoot",
       {from: owner},
-      "callOnChild", Bond.address, payload
+      "callOnChild", Bond.address, 0, payload
     );
 
     console.log(`https://goerli.etherscan.io/tx/${tx.transactionHash}`);

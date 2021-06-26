@@ -29,6 +29,11 @@ const setup = deployments.createFixture(async ({
   // These object allow you to write things like `users[0].Token.transfer(....)`
   const users = await setupUsers(await getUnnamedAccounts(), contracts);
 
+  // setFxChildTunnel
+  await contracts.RootDAO.setFxChildTunnel(contracts.ChildDAO.address);
+  // setFxRootTunnel
+  await contracts.ChildDAO.setFxRootTunnel(contracts.RootDAO.address);
+
   return {
     ...contracts,
     cfg,
@@ -58,14 +63,8 @@ describe("Polygon DAO Root Chain Tests", () => {
         .to.be.revertedWith("Ownable: caller is not the owner");
     });
 
-    it("Should transfer payload to bridge", async function () {
+    it("Should transfer payload to bridge and execute it", async function () {
       const {RootDAO, ChildDAO, ChildMockERC20MOK, StateSender, owner, users} = await setup();
-
-      // setFxChildTunnel
-      await RootDAO.setFxChildTunnel(ChildDAO.address);
-
-      // setFxRootTunnel
-      await ChildDAO.setFxRootTunnel(RootDAO.address);
 
       const amount = "1000000000000000000000";
       await ChildMockERC20MOK.mint(ChildDAO.address, amount);
@@ -76,49 +75,45 @@ describe("Polygon DAO Root Chain Tests", () => {
       const payload = ChildMockERC20MOK.interface.encodeFunctionData("transfer", [users[0].address, amount]);
 
       // transfer to/through the bridge
-      await expect(RootDAO.callOnChild(ChildMockERC20MOK.address, payload))
+      await expect(RootDAO.callOnChild(ChildMockERC20MOK.address, 0, payload))
         .to.emit(StateSender, "StateSynced")
         .to.emit(RootDAO, "CallOnChild")
-        .withArgs(owner.address, ChildMockERC20MOK.address, "0xa9059cbb");
+        .withArgs(owner.address, ChildMockERC20MOK.address, 0, "0xa9059cbb");
 
       const coder = new ethers.utils.AbiCoder();
-      const encoded = coder.encode(["address", "bytes"], [ChildMockERC20MOK.address, payload]);
+      const encoded = coder.encode(["address", "uint256", "bytes"], [ChildMockERC20MOK.address, 0, payload]);
 
       // receive on child and execute
       await expect(ChildDAO.processMessageFromRootTest(0, RootDAO.address, encoded))
         .to.not.be.reverted;
     });
+
+    it("Should transfer payload to bridge and send value on child", async function () {
+      const {RootDAO, ChildDAO, ChildMockERC20MOK, StateSender, owner, users} = await setup();
+
+      const accounts = await ethers.getSigners();
+      await accounts[0].sendTransaction({
+        to: ChildDAO.address,
+        value: 10
+      });
+
+      const payload = "0x";
+
+      // transfer to/through the bridge
+      await expect(RootDAO.callOnChild(ChildMockERC20MOK.address, 10, payload))
+        .to.emit(StateSender, "StateSynced")
+        .to.emit(RootDAO, "CallOnChild")
+        .withArgs(owner.address, ChildMockERC20MOK.address, 10, "0x00000000");
+
+      const coder = new ethers.utils.AbiCoder();
+      const encoded = coder.encode(["address", "uint256", "bytes"], [owner.address, 10, payload]);
+
+      // receive on child and execute
+      await expect(ChildDAO.processMessageFromRootTest(0, RootDAO.address, encoded))
+        .to.not.be.reverted;
+
+      // TODO check ether balance
+    });
   });
 
-  // describe("Root Chain Token Tests", () => {
-  //   it("Should allow any user to exit and transfer tokens to owner", async function () {
-  //     const {Bond, RootHarvester, owner, users} = await setup();
-  //     const value = "1000000000000000000000";
-  //
-  //     expect(await Bond.balanceOf(RootHarvester.address))
-  //       .to.equal("0");
-  //
-  //     await expect(users[0].RootHarvester.withdrawOnRoot("0x3805550f000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000"))
-  //       .to.emit(RootHarvester, "WithdrawOnRoot").withArgs(users[0].address);
-  //
-  //     // transfer some funds manually to the Harvester
-  //     const beforeBalance = await Bond.balanceOf(owner.address);
-  //     await owner.Bond.transfer(RootHarvester.address, value).then((tx: { wait: () => any; }) => tx.wait());
-  //
-  //     expect(await Bond.balanceOf(RootHarvester.address))
-  //       .to.equal(value);
-  //
-  //     await expect(users[0].RootHarvester.transferToOwner(Bond.address))
-  //       .to.emit(RootHarvester, "TransferToOwner")
-  //       .withArgs(users[0].address, owner.address, Bond.address, value)
-  //       .to.emit(Bond, "Transfer")
-  //       .withArgs(RootHarvester.address, owner.address, value);
-  //
-  //     expect(await Bond.balanceOf(RootHarvester.address))
-  //       .to.equal("0");
-  //
-  //     expect(await Bond.balanceOf(owner.address))
-  //       .to.equal(beforeBalance);
-  //   });
-  // });
 });
