@@ -15,7 +15,7 @@ contract ERC20ChildTokenMock is ERC20, IERC20ChildToken {
 
     function deposit(address _user, bytes calldata _depositData) external override {
         // spoof an amount
-        uint amount = 10e18;
+        uint256 amount = 10e18;
         _mint(_user, amount);
     }
 

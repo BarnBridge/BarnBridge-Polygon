@@ -15,15 +15,15 @@ contract PolygonTokenHarvester is OwnableUpgradeable {
     bool private _onRootChain;
 
     address public rootChainManager;
-    mapping(address => uint) public lastWithdraw;
-    uint public withdrawCooldown;
+    mapping(address => uint256) public lastWithdraw;
+    uint256 public withdrawCooldown;
 
     event SetAllowance(address indexed caller, address indexed spender, uint256 amount);
     event TransferToOwner(address indexed caller, address indexed owner, address indexed token, uint256 amount);
     event WithdrawOnRoot(address indexed caller);
     event WithdrawOnChild(address indexed caller, address indexed token, uint256 amount);
 
-    function initialize(uint _withdrawCooldown, address _rootChainManager) initializer public {
+    function initialize(uint256 _withdrawCooldown, address _rootChainManager) initializer public {
         __Ownable_init();
 
         setWithdrawCooldown(_withdrawCooldown);
@@ -52,7 +52,7 @@ contract PolygonTokenHarvester is OwnableUpgradeable {
         _;
     }
 
-    function setWithdrawCooldown(uint _withdrawCooldown) public onlyOwner onlyOnChild {
+    function setWithdrawCooldown(uint256 _withdrawCooldown) public onlyOwner onlyOnChild {
         withdrawCooldown = _withdrawCooldown;
     }
 

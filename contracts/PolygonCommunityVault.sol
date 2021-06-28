@@ -30,7 +30,7 @@ contract PolygonCommunityVault is OwnableUpgradeable {
         }
      }
 
-    function setAllowance(address spender, uint amount) public onlyOwner {
+    function setAllowance(address spender, uint256 amount) public onlyOwner {
         IERC20(token).approve(spender, amount);
 
         emit SetAllowance(msg.sender, spender, amount);
