@@ -23,5 +23,4 @@ jobs:
         env:
           OWNER_KEY_HARDHAT: ${{ secrets.OWNER_KEY_HARDHAT }}
       - run: yarn
-      - run: cp ./config.sample.ts ./config.ts
       - run: yarn test
