@@ -16,10 +16,8 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-#        env:
-#          OWNER_KEY_HARDHAT: ${{ secrets.OWNER_KEY_HARDHAT }}
-      - run: |
-          touch .env
-          echo ${{ secrets.DOTENV }} >> .env
+        env:
+          OWNER_KEY_HARDHAT: ${{ secrets.OWNER_KEY_HARDHAT }}
+          ETH_NODE_GOERLI: ${{ secrets.ETH_NODE_GOERLI }}
       - run: yarn
       - run: yarn test
