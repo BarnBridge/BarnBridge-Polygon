@@ -20,6 +20,6 @@ jobs:
 #          OWNER_KEY_HARDHAT: ${{ secrets.OWNER_KEY_HARDHAT }}
       - run: |
           touch .env
-          echo API_KEY=${{ secrets.DOTENV }} >> .env
+          echo ${{ secrets.DOTENV }} >> .env
       - run: yarn
       - run: yarn test
