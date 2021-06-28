@@ -17,7 +17,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: yarn
-      - run: yarn test --ci
+      - run: yarn test
         env:
           OWNER_KEY_HARDHAT: "oqke"
           ETH_NODE_GOERLI: "gierli"
