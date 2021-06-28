@@ -16,6 +16,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
+          env: true
         env:
           OWNER_KEY_HARDHAT: ${{ secrets.OWNER_KEY_HARDHAT }}
           ETH_NODE_GOERLI: ${{ secrets.ETH_NODE_GOERLI }}
