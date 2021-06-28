@@ -19,5 +19,5 @@ jobs:
       - run: yarn
       - run: yarn test
         env:
-          OWNER_KEY_HARDHAT: "oqke"
-          ETH_NODE_GOERLI: "gierli"
+          OWNER_KEY_HARDHAT: ${{ secrets.OWNER_KEY_HARDHAT }}
+          ETH_NODE_GOERLI:  ${{ secrets.ETH_NODE_GOERLI }}
