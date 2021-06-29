@@ -98,15 +98,17 @@ Sets the allowance of a spending address
 
 > This event is emitted when setAlowance is called
 
+  
 
 #### Params:
-| Param | Type | Description |
-| --- | --- | --- |
-|`caller` | address | Address that called setAllowance
-|`spender` | address | Address that the allowance has been set for
-|`amount` | uint256 | The amount of tokens that spender can spend
+| Param | Type | Indexed | Description |
+| --- | :---: | --- | --- |
+|`caller` | address | true | Address that called setAllowance
+|`spender` | address | true | Address that the allowance has been set for
+|`amount` | uint256 | false | The amount of tokens that spender can spend
 ### TransferToChild
 No description
 
+  
 
 
