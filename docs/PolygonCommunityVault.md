@@ -102,10 +102,10 @@ Sets the allowance of a spending address
 
 #### Params:
 | Param | Type | Indexed | Description |
-| --- | :---: | --- | --- |
-|`caller` | address | true | Address that called setAllowance
-|`spender` | address | true | Address that the allowance has been set for
-|`amount` | uint256 | false | The amount of tokens that spender can spend
+| --- | :---: | :---: | --- |
+|`caller` | address | :white_check_mark: | Address that called setAllowance
+|`spender` | address | :white_check_mark: | Address that the allowance has been set for
+|`amount` | uint256 |  | The amount of tokens that spender can spend
 ### TransferToChild
 No description
 
