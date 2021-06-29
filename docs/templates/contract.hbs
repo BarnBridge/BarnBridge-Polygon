@@ -9,18 +9,16 @@
 <!-- END doctoc -->
 
 {{#if ownVariables}}
-## Variables:
+## Globals
 
+> Note this contains internal vars as well due to a bug in the docgen
+
+| Var | Type |
+| --- | :---: |
 {{#ownVariables}}
-### {{name}}
-{{#if natspec.userdoc}}{{natspec.userdoc}}{{else}}No description{{/if}}
-{{#if natspec.devdoc}}> {{natspec.devdoc}}{{/if}}
-
-#### Type
-```solidity
-{{ type }}
-```
-
+{{#unless (eq visibility "internal")}}
+| {{name}} | {{ type }} |
+{{/unless}}
 {{/ownVariables}}
 {{/if}}
 
@@ -32,6 +30,24 @@
 ### {{name}}
 {{#if natspec.userdoc}}{{natspec.userdoc}}{{else}}No description{{/if}}
 {{#if natspec.devdoc}}> {{natspec.devdoc}}{{/if}}
+
+#### Declaration
+```solidity
+  modifier {{name}}{{#if natspec.params}}(
+    {{#natspec.params}}
+    {{#lookup ../args.types @index}}{{/lookup}} {{param}}{{#if @last}}{{else}},{{/if}}
+    {{/natspec.params}}
+  ){{/if}}
+```
+
+{{#if natspec.params}}
+#### Args:
+| Arg | Type | Description |
+| --- | --- | --- |
+{{#natspec.params}}
+|`{{param}}` | {{#lookup ../args.types @index}}{{/lookup}} | {{description}} {{~"|"}}
+{{~/natspec.params}}
+{{/if}}
 
 {{/ownModifiers}}
 {{/if}}
@@ -80,14 +96,15 @@
 ### {{name}}
 {{#if natspec.userdoc}}{{natspec.userdoc}}{{else}}No description{{/if}}
 {{#if natspec.devdoc}}> {{natspec.devdoc}}{{/if}}
+  
 
 {{#if natspec.params}}
 #### Params:
-| Param | Type | Description |
-| --- | --- | --- |
+| Param | Type | Indexed | Description |
+| --- | :---: | :---: | --- |
 {{#natspec.params}}
-|`{{param}}` | {{#lookup ../args.types @index}}{{/lookup}} | {{description}} {{~"|"}}
-{{~/natspec.params}}
+|`{{param}}` | {{lookup ../args.types @index}} | {{#with (lookup ../astNode.parameters.parameters @index)}}{{#if indexed}}:white_check_mark:{{/if}}{{/with}} | {{description}} {{~-~}}
+{{/natspec.params}}
 {{/if}}
 
 {{/ownEvents}}

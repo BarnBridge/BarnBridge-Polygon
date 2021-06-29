@@ -14,6 +14,7 @@ contract PolygonCommunityVault is OwnableUpgradeable {
     IRootChainManager internal rootChainManager;
     address internal erc20Predicate;
 
+    /// @notice Address of the ERC20 token handled by the vault
     address public token;
 
     /// @notice Sets the allowance of a spending address
@@ -22,6 +23,12 @@ contract PolygonCommunityVault is OwnableUpgradeable {
     /// @param spender Address that the allowance has been set for
     /// @param amount The amount of tokens that spender can spend
     event SetAllowance(address indexed caller, address indexed spender, uint256 amount);
+    
+    /// @notice Explain to an end user what this does
+    /// @dev Explain to a developer any extra details
+    /// @param caller Address that called transferToChild
+    /// @param token Address of the transferred token
+    /// @param amount The amount of tokens that were sent to the child chain
     event TransferToChild(address indexed caller, address indexed token,  uint256 amount);
 
     /// @notice PolygonCommunityVault initializer

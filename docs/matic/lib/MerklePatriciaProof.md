@@ -5,8 +5,14 @@
 
 
 ## Contents
-<!-- START doctoc -->
-<!-- END doctoc -->
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+- [Functions](#functions)
+  - [verify](#verify)
+  - [_getNibbleArray](#_getnibblearray)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 
 

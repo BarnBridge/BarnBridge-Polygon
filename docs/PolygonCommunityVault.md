@@ -6,38 +6,29 @@ Assists with moving a specified token from the root chain to the child chain. Ma
 > It needs to be deployed at the same address on both chains. Uses CREATE2 on deploy to achieve that
 
 ## Contents
-<!-- START doctoc -->
-<!-- END doctoc -->
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-## Variables:
+- [Globals](#globals)
+- [Functions](#functions)
+  - [initialize](#initialize)
+  - [setAllowance](#setallowance)
+  - [transferToChild](#transfertochild)
+- [Events](#events)
+  - [SetAllowance](#setallowance)
+  - [TransferToChild](#transfertochild)
 
-### rootChainManager
-No description
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
+## Globals
 
-#### Type
-```solidity
-contract IRootChainManager
-```
+> Note this contains internal vars as well due to a bug in the docgen
 
-### erc20Predicate
-No description
-
-
-#### Type
-```solidity
-address
-```
-
-### token
-No description
-
-
-#### Type
-```solidity
-address
-```
-
+| Var | Type |
+| --- | :---: |
+| rootChainManager | contract IRootChainManager |
+| erc20Predicate | address |
+| token | address |
 
 
 
@@ -107,8 +98,15 @@ Sets the allowance of a spending address
 |`spender` | address | :white_check_mark: | Address that the allowance has been set for
 |`amount` | uint256 |  | The amount of tokens that spender can spend
 ### TransferToChild
-No description
+Explain to an end user what this does
+
+> Explain to a developer any extra details
 
   
 
-
+#### Params:
+| Param | Type | Indexed | Description |
+| --- | :---: | :---: | --- |
+|`caller` | address | :white_check_mark: | Address that called transferToChild
+|`token` | address | :white_check_mark: | Address of the transferred token
+|`amount` | uint256 |  | The amount of tokens that were sent to the child chain

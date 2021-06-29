@@ -5,8 +5,16 @@
 
 
 ## Contents
-<!-- START doctoc -->
-<!-- END doctoc -->
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+- [Functions](#functions)
+  - [lockTokens](#locktokens)
+  - [exitTokens](#exittokens)
+- [Events](#events)
+  - [LockedERC20](#lockederc20)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 
 
@@ -67,5 +75,6 @@ Processes withdraw based on custom logic. Example: transfer ERC20/ERC721, mint E
 ### LockedERC20
 No description
 
+  
 
 

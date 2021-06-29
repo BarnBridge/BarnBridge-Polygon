@@ -36,6 +36,8 @@ contract PolygonTokenHarvester is OwnableUpgradeable {
         }
     }
 
+    /// @notice Allows the call only on the root chain
+    /// @dev Checks if rootChainManager is set and only then allows the call
     modifier onlyOnRoot {
         require(
             _onRootChain == true,

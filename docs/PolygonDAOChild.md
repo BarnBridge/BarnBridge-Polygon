@@ -5,38 +5,27 @@
 
 
 ## Contents
-<!-- START doctoc -->
-<!-- END doctoc -->
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-## Variables:
+- [Globals](#globals)
+- [Functions](#functions)
+  - [constructor](#constructor)
+  - [receive](#receive)
+  - [_processMessageFromRoot](#_processmessagefromroot)
+  - [sendMessageToRoot](#sendmessagetoroot)
 
-### latestStateId
-No description
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
+## Globals
 
-#### Type
-```solidity
-uint256
-```
+> Note this contains internal vars as well due to a bug in the docgen
 
-### latestRootMessageSender
-No description
-
-
-#### Type
-```solidity
-address
-```
-
-### latestData
-No description
-
-
-#### Type
-```solidity
-bytes
-```
-
+| Var | Type |
+| --- | :---: |
+| latestStateId | uint256 |
+| latestRootMessageSender | address |
+| latestData | bytes |
 
 
 

@@ -5,20 +5,20 @@
 
 
 ## Contents
-<!-- START doctoc -->
-<!-- END doctoc -->
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-## Variables:
+- [Globals](#globals)
 
-### headerBlocks
-No description
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
+## Globals
 
-#### Type
-```solidity
-mapping(uint256 => struct ICheckpointManager.HeaderBlock)
-```
+> Note this contains internal vars as well due to a bug in the docgen
 
+| Var | Type |
+| --- | :---: |
+| headerBlocks | mapping(uint256 => struct ICheckpointManager.HeaderBlock) |
 
 
 

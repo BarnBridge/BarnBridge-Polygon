@@ -5,56 +5,31 @@
 
 
 ## Contents
-<!-- START doctoc -->
-<!-- END doctoc -->
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-## Variables:
+- [Globals](#globals)
+- [Functions](#functions)
+  - [constructor](#constructor)
+  - [setFxChildTunnel](#setfxchildtunnel)
+  - [_sendMessageToChild](#_sendmessagetochild)
+  - [_validateAndExtractMessage](#_validateandextractmessage)
+  - [receiveMessage](#receivemessage)
+  - [_processMessageFromChild](#_processmessagefromchild)
 
-### SEND_MESSAGE_EVENT_SIG
-No description
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
+## Globals
 
-#### Type
-```solidity
-bytes32
-```
+> Note this contains internal vars as well due to a bug in the docgen
 
-### fxRoot
-No description
-
-
-#### Type
-```solidity
-contract IFxStateSender
-```
-
-### checkpointManager
-No description
-
-
-#### Type
-```solidity
-contract ICheckpointManager
-```
-
-### fxChildTunnel
-No description
-
-
-#### Type
-```solidity
-address
-```
-
-### processedExits
-No description
-
-
-#### Type
-```solidity
-mapping(bytes32 => bool)
-```
-
+| Var | Type |
+| --- | :---: |
+| SEND_MESSAGE_EVENT_SIG | bytes32 |
+| fxRoot | contract IFxStateSender |
+| checkpointManager | contract ICheckpointManager |
+| fxChildTunnel | address |
+| processedExits | mapping(bytes32 => bool) |
 
 
 

@@ -5,48 +5,61 @@
 
 
 ## Contents
-<!-- START doctoc -->
-<!-- END doctoc -->
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-## Variables:
+- [Globals](#globals)
+- [Modifiers](#modifiers)
+  - [onlyOnRoot](#onlyonroot)
+  - [onlyOnChild](#onlyonchild)
+- [Functions](#functions)
+  - [initialize](#initialize)
+  - [setWithdrawCooldown](#setwithdrawcooldown)
+  - [withdrawOnRoot](#withdrawonroot)
+  - [transferToOwner](#transfertoowner)
+  - [withdrawAndTransferToOwner](#withdrawandtransfertoowner)
+  - [withdrawOnChild](#withdrawonchild)
+  - [claimAndWithdrawOnChild](#claimandwithdrawonchild)
+- [Events](#events)
+  - [SetAllowance](#setallowance)
+  - [TransferToOwner](#transfertoowner)
+  - [WithdrawOnRoot](#withdrawonroot)
+  - [WithdrawOnChild](#withdrawonchild)
 
-### rootChainManager
-No description
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
+## Globals
 
-#### Type
-```solidity
-address
-```
+> Note this contains internal vars as well due to a bug in the docgen
 
-### lastWithdraw
-No description
-
-
-#### Type
-```solidity
-mapping(address => uint256)
-```
-
-### withdrawCooldown
-No description
-
-
-#### Type
-```solidity
-uint256
-```
-
+| Var | Type |
+| --- | :---: |
+| rootChainManager | address |
+| lastWithdraw | mapping(address => uint256) |
+| withdrawCooldown | uint256 |
 
 
 ## Modifiers
 
 ### onlyOnRoot
-No description
+Allows the call only on the root chain
+
+> Checks if rootChainManager is set and only then allows the call
+
+#### Declaration
+```solidity
+  modifier onlyOnRoot
+```
 
 
 ### onlyOnChild
 No description
+
+
+#### Declaration
+```solidity
+  modifier onlyOnChild
+```
 
 
 
@@ -143,20 +156,24 @@ No description
 ### SetAllowance
 No description
 
+  
 
 
 ### TransferToOwner
 No description
 
+  
 
 
 ### WithdrawOnRoot
 No description
 
+  
 
 
 ### WithdrawOnChild
 No description
 
+  
 
 

@@ -5,56 +5,33 @@
 
 
 ## Contents
-<!-- START doctoc -->
-<!-- END doctoc -->
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-## Variables:
+- [Globals](#globals)
+- [Functions](#functions)
+  - [toRlpItem](#torlpitem)
+  - [toList](#tolist)
+  - [isList](#islist)
+  - [toRlpBytes](#torlpbytes)
+  - [toAddress](#toaddress)
+  - [toUint](#touint)
+  - [toUintStrict](#touintstrict)
+  - [toBytes](#tobytes)
 
-### STRING_SHORT_START
-No description
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
+## Globals
 
-#### Type
-```solidity
-uint8
-```
+> Note this contains internal vars as well due to a bug in the docgen
 
-### STRING_LONG_START
-No description
-
-
-#### Type
-```solidity
-uint8
-```
-
-### LIST_SHORT_START
-No description
-
-
-#### Type
-```solidity
-uint8
-```
-
-### LIST_LONG_START
-No description
-
-
-#### Type
-```solidity
-uint8
-```
-
-### WORD_SIZE
-No description
-
-
-#### Type
-```solidity
-uint8
-```
-
+| Var | Type |
+| --- | :---: |
+| STRING_SHORT_START | uint8 |
+| STRING_LONG_START | uint8 |
+| LIST_SHORT_START | uint8 |
+| LIST_LONG_START | uint8 |
+| WORD_SIZE | uint8 |
 
 
 

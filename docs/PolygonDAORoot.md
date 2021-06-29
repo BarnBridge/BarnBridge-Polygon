@@ -5,20 +5,27 @@
 
 
 ## Contents
-<!-- START doctoc -->
-<!-- END doctoc -->
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-## Variables:
+- [Globals](#globals)
+- [Functions](#functions)
+  - [constructor](#constructor)
+  - [_processMessageFromChild](#_processmessagefromchild)
+  - [sendMessageToChild](#sendmessagetochild)
+  - [callOnChild](#callonchild)
+- [Events](#events)
+  - [CallOnChild](#callonchild)
 
-### latestData
-No description
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
+## Globals
 
-#### Type
-```solidity
-bytes
-```
+> Note this contains internal vars as well due to a bug in the docgen
 
+| Var | Type |
+| --- | :---: |
+| latestData | bytes |
 
 
 
@@ -79,5 +86,6 @@ No description
 ### CallOnChild
 No description
 
+  
 
 

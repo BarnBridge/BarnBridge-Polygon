@@ -5,35 +5,43 @@ Mock child tunnel contract to receive and send message from L2
 
 
 ## Contents
-<!-- START doctoc -->
-<!-- END doctoc -->
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-## Variables:
+- [Globals](#globals)
+- [Modifiers](#modifiers)
+  - [validateSender](#validatesender)
+- [Functions](#functions)
+  - [constructor](#constructor)
+  - [setFxRootTunnel](#setfxroottunnel)
+  - [processMessageFromRoot](#processmessagefromroot)
+  - [_sendMessageToRoot](#_sendmessagetoroot)
+  - [_processMessageFromRoot](#_processmessagefromroot)
+- [Events](#events)
+  - [MessageSent](#messagesent)
 
-### fxChild
-No description
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
+## Globals
 
-#### Type
-```solidity
-address
-```
+> Note this contains internal vars as well due to a bug in the docgen
 
-### fxRootTunnel
-No description
-
-
-#### Type
-```solidity
-address
-```
-
+| Var | Type |
+| --- | :---: |
+| fxChild | address |
+| fxRootTunnel | address |
 
 
 ## Modifiers
 
 ### validateSender
 No description
+
+
+#### Declaration
+```solidity
+  modifier validateSender
+```
 
 
 
@@ -128,5 +136,6 @@ Since it is called via a system call, any event will not be emitted during its e
 ### MessageSent
 No description
 
+  
 
 
