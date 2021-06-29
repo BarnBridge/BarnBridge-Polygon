@@ -7,58 +7,60 @@ Assists with moving a specified token from the root chain to the child chain. Ma
 
 ## Functions
 
-### `initialize(address _token, address _rootChainManager, address _erc20Predicate)` (public)
-Needs to be called after deployment. Get addresses from https://github.com/maticnetwork/static/tree/master/network
-
-
-#### Parameters:
-- `_token`: The address of the ERC20 that the vault will manipulate/own
-
-- `_rootChainManager`: Polygon root network chain manager. Zero address for child deployment
-
-- `_erc20Predicate`: Polygon ERC20 Predicate. Zero address for child deployment
-
 ### initialize
 PolygonCommunityVault initializer
 
 > Needs to be called after deployment. Get addresses from https://github.com/maticnetwork/static/tree/master/network
 
 
+#### Declaration
 ```solidity
   function initialize(
-    address _token, // The address of the ERC20 that the vault will manipulate/own
-    address _rootChainManager, // Polygon root network chain manager. Zero address for child deployment
-    address _erc20Predicate // Polygon ERC20 Predicate. Zero address for child deployment
+    address _token,
+    address _rootChainManager,
+    address _erc20Predicate
   ) public
 ```
 
-### `setAllowance(address spender, uint256 amount)` (public)
-No description
+#### Parameters:
+- `_token`: The address of the ERC20 that the vault will manipulate/own
+- `_rootChainManager`: Polygon root network chain manager. Zero address for child deployment
+- `_erc20Predicate`: Polygon ERC20 Predicate. Zero address for child deployment
 
+#### Args:
+| Arg | Type | Description |
+| --- | --- | --- |
+|`_token` | address | The address of the ERC20 that the vault will manipulate/own
+|`_rootChainManager` | address | Polygon root network chain manager. Zero address for child deployment
+|`_erc20Predicate` | address | Polygon ERC20 Predicate. Zero address for child deployment
 
 ### setAllowance
 No description
 
 
+#### Declaration
 ```solidity
   function setAllowance(
-
   ) public
 ```
 
-### `transferToChild()` (public)
-No description
+
+
 
 
 ### transferToChild
 No description
 
 
+#### Declaration
 ```solidity
   function transferToChild(
-
   ) public
 ```
+
+
+
+
 
 
 
