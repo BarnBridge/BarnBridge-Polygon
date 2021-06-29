@@ -6,16 +6,30 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 import "./matic/IRootChainManager.sol";
 
+/// @title PolygonCommunityVault
+/// @author Alex T
+/// @notice Assists with moving a specified token from the root chain to the child chain. Made for Polygon
+/// @dev It needs to be deployed at the same address on both chains. Uses CREATE2 on deploy to achieve that
 contract PolygonCommunityVault is OwnableUpgradeable {
     IRootChainManager internal rootChainManager;
     address internal erc20Predicate;
 
     address public token;
 
+    /// @notice Sets the allowance of a spending address
+    /// @dev This event is emitted when setAlowance is called
+    /// @param caller Address that called setAllowance
+    /// @param spender Address that the allowance has been set for
+    /// @param amount The amount of tokens that spender can spend
     event SetAllowance(address indexed caller, address indexed spender, uint256 amount);
     event TransferToChild(address indexed caller, address indexed token,  uint256 amount);
 
-    function initialize(address _token, address _rootChainManager, address _erc20Predicate)  public initializer {
+    /// @notice PolygonCommunityVault initializer
+    /// @dev Needs to be called after deployment. Get addresses from https://github.com/maticnetwork/static/tree/master/network
+    /// @param _token The address of the ERC20 that the vault will manipulate/own
+    /// @param _rootChainManager Polygon root network chain manager. Zero address for child deployment
+    /// @param _erc20Predicate Polygon ERC20 Predicate. Zero address for child deployment
+    function initialize(address _token, address _rootChainManager, address _erc20Predicate) public initializer {
         require(_token != address(0), "Vault: a valid token address must be provided");
 
         __Ownable_init();
@@ -28,7 +42,7 @@ contract PolygonCommunityVault is OwnableUpgradeable {
             erc20Predicate = _erc20Predicate;
             rootChainManager = IRootChainManager(_rootChainManager);
         }
-     }
+    }
 
     function setAllowance(address spender, uint256 amount) public onlyOwner {
         IERC20(token).approve(spender, amount);

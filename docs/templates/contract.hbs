@@ -1,0 +1,94 @@
+# {{{name}}}
+
+{{{title}}}
+{{{natspec.userdoc}}}
+{{#if natspec.devdoc}}> {{natspec.devdoc}}{{/if}}
+
+## Contents
+<!-- START doctoc -->
+<!-- END doctoc -->
+
+{{#if ownVariables}}
+## Variables:
+
+{{#ownVariables}}
+### {{name}}
+{{#if natspec.userdoc}}{{natspec.userdoc}}{{else}}No description{{/if}}
+{{#if natspec.devdoc}}> {{natspec.devdoc}}{{/if}}
+
+#### Type
+```solidity
+{{ type }}
+```
+
+{{/ownVariables}}
+{{/if}}
+
+
+{{#if ownModifiers}}
+## Modifiers
+
+{{#ownModifiers}}
+### {{name}}
+{{#if natspec.userdoc}}{{natspec.userdoc}}{{else}}No description{{/if}}
+{{#if natspec.devdoc}}> {{natspec.devdoc}}{{/if}}
+
+{{/ownModifiers}}
+{{/if}}
+
+{{#if ownFunctions}}
+## Functions
+
+{{#ownFunctions}}
+### {{name}}
+{{#if natspec.userdoc}}{{natspec.userdoc}}{{else}}No description{{/if}}
+{{#if natspec.devdoc}}> {{natspec.devdoc}}{{/if}}
+
+#### Declaration
+```solidity
+  function {{name}}(
+    {{#natspec.params}}
+    {{#lookup ../args.types @index}}{{/lookup}} {{param}}{{#if @last}}{{else}},{{/if}}
+    {{/natspec.params}}
+  ) {{visibility}}{{#if outputs}} returns ({{outputs}}){{/if}}
+```
+
+{{#if natspec.params}}
+#### Args:
+| Arg | Type | Description |
+| --- | --- | --- |
+{{#natspec.params}}
+|`{{param}}` | {{#lookup ../args.types @index}}{{/lookup}} | {{description}} {{~"|"}}
+{{~/natspec.params}}
+{{/if}}
+
+{{#if natspec.returns}}
+#### Returns:
+{{#natspec.returns}}
+- {{param}} {{description}}
+{{/natspec.returns}}
+{{/if}}
+
+{{/ownFunctions}}
+{{/if}}
+
+
+{{#if ownEvents}}
+## Events
+
+{{#ownEvents}}
+### {{name}}
+{{#if natspec.userdoc}}{{natspec.userdoc}}{{else}}No description{{/if}}
+{{#if natspec.devdoc}}> {{natspec.devdoc}}{{/if}}
+
+{{#if natspec.params}}
+#### Params:
+| Param | Type | Description |
+| --- | --- | --- |
+{{#natspec.params}}
+|`{{param}}` | {{#lookup ../args.types @index}}{{/lookup}} | {{description}} {{~"|"}}
+{{~/natspec.params}}
+{{/if}}
+
+{{/ownEvents}}
+{{/if}}
