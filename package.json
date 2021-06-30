@@ -19,7 +19,7 @@
     "@types/node": "^15.3.0",
     "chai": "^4.3.4",
     "chai-ethers": "^0.0.1",
-    "doctoc": "^2.0.1",
+    "doctoc": "git+ssh://git@github.com:thlorenz/doctoc.git#master",
     "dotenv": "^9.0.2",
     "ethereum-waffle": "^3.3.0",
     "ethers": "^5.3.1",
