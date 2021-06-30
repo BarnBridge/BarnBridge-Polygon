@@ -22,7 +22,7 @@ Assists with moving a specified token from the root chain to the child chain. Ma
 
 ## Globals
 
-> Note this contains internal vars as well due to a bug in the docgen
+> Note this contains internal vars as well due to a bug in the docgen procedure
 
 | Var | Type |
 | --- | :---: |

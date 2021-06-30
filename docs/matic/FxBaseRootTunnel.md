@@ -21,7 +21,7 @@
 
 ## Globals
 
-> Note this contains internal vars as well due to a bug in the docgen
+> Note this contains internal vars as well due to a bug in the docgen procedure
 
 | Var | Type |
 | --- | :---: |
