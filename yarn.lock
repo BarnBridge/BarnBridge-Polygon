@@ -2906,9 +2906,9 @@ dir-glob@^3.0.1:
   dependencies:
     path-type "^4.0.0"
 
-"doctoc@git+ssh://git@github.com:thlorenz/doctoc.git#master":
+"doctoc@github:thlorenz/doctoc#master":
   version "2.0.1"
-  resolved "git+ssh://git@github.com:thlorenz/doctoc.git#dcbdb1c0a47b1a08e2f11f942411afb20b2330e2"
+  resolved "https://codeload.github.com/thlorenz/doctoc/tar.gz/dcbdb1c0a47b1a08e2f11f942411afb20b2330e2"
   dependencies:
     "@textlint/markdown-to-ast" "~6.1.7"
     anchor-markdown-header "~0.5.7"
