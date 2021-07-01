@@ -136,40 +136,60 @@ Transfers full balance of token to owner
 |`_token` | address | Address of token to transfer
 
 ### withdrawAndTransferToOwner
-No description
+Exit funds from polygon and transfer to owner
+
+> Calls withdrawOnRoot then transferToOwner
 
 
 #### Declaration
 ```solidity
   function withdrawAndTransferToOwner(
+    bytes _data,
+    address _token
   ) public returns (bytes)
 ```
 
-
+#### Args:
+| Arg | Type | Description |
+| --- | --- | --- |
+|`_data` | bytes | Exit payload created with the Matic SDK
+|`_token` | address | Address of token to transfer
 
 ### withdrawOnChild
-No description
+Withdraws full token balance from the child chain
+
+> Emits WithdrawOnChild on succesful withdraw and burn
 
 
 #### Declaration
 ```solidity
   function withdrawOnChild(
+    address _childToken
   ) public
 ```
 
-
+#### Args:
+| Arg | Type | Description |
+| --- | --- | --- |
+|`_childToken` | address | Address of token to withdraw
 
 ### claimAndWithdrawOnChild
-No description
+Transfer fees from SmartYield and withdraw them from the child chain
+
+> Helper that transfer fees from a SmartYield deployment as underlaying token.
 
 
 #### Declaration
 ```solidity
   function claimAndWithdrawOnChild(
+    address _syProvider
   ) public
 ```
 
-
+#### Args:
+| Arg | Type | Description |
+| --- | --- | --- |
+|`_syProvider` | address | SmartYield deployment address
 
 
 

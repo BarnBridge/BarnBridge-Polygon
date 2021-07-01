@@ -93,6 +93,10 @@ contract PolygonTokenHarvester is OwnableUpgradeable {
         emit TransferToOwner(_msgSender(), to, _token, amount);
     }
 
+    /// @notice Exit funds from polygon and transfer to owner
+    /// @dev Calls withdrawOnRoot then transferToOwner
+    /// @param _data Exit payload created with the Matic SDK
+    /// @param _token Address of token to transfer
     function withdrawAndTransferToOwner(bytes memory _data, address _token) public onlyOnRoot returns (bytes memory) {
         bytes memory returnData =  withdrawOnRoot(_data);
         transferToOwner(_token);
@@ -101,6 +105,10 @@ contract PolygonTokenHarvester is OwnableUpgradeable {
     }
 
     // Child Chain Related Functions
+
+    /// @notice Withdraws full token balance from the child chain
+    /// @dev Emits WithdrawOnChild on succesful withdraw and burn
+    /// @param _childToken Address of token to withdraw
     function withdrawOnChild(address _childToken) public onlyOnChild {
         require(_childToken != address(0), "Harvester: child token address must be specified");
 
@@ -118,6 +126,9 @@ contract PolygonTokenHarvester is OwnableUpgradeable {
         emit WithdrawOnChild(_msgSender(), _childToken, amount);
     }
 
+    /// @notice Transfer fees from SmartYield and withdraw them from the child chain
+    /// @dev Helper that transfer fees from a SmartYield deployment as underlaying token.
+    /// @param _syProvider SmartYield deployment address
     function claimAndWithdrawOnChild(address _syProvider) public onlyOnChild {
         require(_syProvider != address(0), "Harvester: sy provider address must not be 0x0");
 
