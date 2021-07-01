@@ -94,9 +94,9 @@ Transfers full balance of managed token through the Polygon Bridge
 ## Events
 
 ### SetAllowance
-Notfies of allowance being set
+Notifies of allowance being set
 
-> This event is emitted when setAlowance is called
+> Emitted when setAlowance is called
 
   
 
@@ -107,9 +107,9 @@ Notfies of allowance being set
 |`spender` | address | :white_check_mark: | Address that the allowance has been set for
 |`amount` | uint256 |  | The amount of tokens that spender can spend
 ### TransferToChild
-Explain to an end user what this does
+Notifies of a transfer to the child chain being made
 
-> Explain to a developer any extra details
+> Emitted when transferToChild is called
 
   
 

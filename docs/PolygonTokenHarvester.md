@@ -1,8 +1,9 @@
 # PolygonTokenHarvester
 
 
+Assists with moving any given token from the child chain to the root chain. Made for Polygon
 
-
+> It needs to be deployed at the same address on both chains. Uses CREATE2 on deploy to achieve that
 
 ## Contents
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
@@ -66,16 +67,24 @@ Allows the call only on the child chain
 ## Functions
 
 ### initialize
-No description
+PolygonTokenHarvester initializer
+
+> Needs to be called after deployment. Get addresses from https://github.com/maticnetwork/static/tree/master/network
 
 
 #### Declaration
 ```solidity
   function initialize(
+    uint256 _withdrawCooldown,
+    address _rootChainManager
   ) public
 ```
 
-
+#### Args:
+| Arg | Type | Description |
+| --- | --- | --- |
+|`_withdrawCooldown` | uint256 | Number of blocks needed between withdrawals
+|`_rootChainManager` | address | Address of Polygon rootChainManager. Set to zero address on child chain
 
 ### setWithdrawCooldown
 Sets the minimum number of blocks that must pass between withdrawals
@@ -93,7 +102,7 @@ Sets the minimum number of blocks that must pass between withdrawals
 #### Args:
 | Arg | Type | Description |
 | --- | --- | --- |
-|`_withdrawCooldown` | uint256 | Number of blocks
+|`_withdrawCooldown` | uint256 | Number of blocks needed between withdrawals
 
 ### withdrawOnRoot
 Withdraws to itself exited funds from Polygon
@@ -196,20 +205,40 @@ Transfer fees from SmartYield and withdraw them from the child chain
 ## Events
 
 ### TransferToOwner
-No description
+Logs a transfer of tokens to owner
+
+> Emitted when transferToOwner is called
 
   
 
-
+#### Params:
+| Param | Type | Indexed | Description |
+| --- | :---: | :---: | --- |
+|`caller` | address | :white_check_mark: | Address that called transferToOwner
+|`owner` | address | :white_check_mark: | Address that the funds have been transferred to
+|`token` | address | :white_check_mark: | Address of the transferred token
+|`amount` | uint256 |  | The amount of tokens that were sent to the child chain
 ### WithdrawOnRoot
-No description
+Logs a withdrawal being made on the root chain
+
+> Emitted when withdrawOnRoot is called
 
   
 
-
+#### Params:
+| Param | Type | Indexed | Description |
+| --- | :---: | :---: | --- |
+|`caller` | address | :white_check_mark: | Address that called withdrawOnRoot
 ### WithdrawOnChild
-No description
+Logs withdrawal being made on the child chain
+
+> Emitted when withdrawOnChild is called
 
   
 
-
+#### Params:
+| Param | Type | Indexed | Description |
+| --- | :---: | :---: | --- |
+|`caller` | address | :white_check_mark: | Address that called withdrawOnChild
+|`token` | address | :white_check_mark: | Address of the withdrawn token
+|`amount` | uint256 |  | The amount of tokens that were withdrawn

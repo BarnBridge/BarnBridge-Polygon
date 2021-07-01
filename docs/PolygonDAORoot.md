@@ -1,8 +1,9 @@
 # PolygonDAORoot
 
 
+Root chain side of a Polygon data bridge meant to execute commands on the child chain
 
-
+> This can be used to forward commands given by the DAO to be executed on the child chain
 
 ## Contents
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->

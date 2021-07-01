@@ -14,7 +14,6 @@ contract PolygonCommunityVault is OwnableUpgradeable {
     IRootChainManager internal rootChainManager;
     address internal erc20Predicate;
 
-    /// @notice Address of the ERC20 token handled by the vault
     address public token;
 
     /// @notice Notifies of allowance being set

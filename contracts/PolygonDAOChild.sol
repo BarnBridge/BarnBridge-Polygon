@@ -6,6 +6,10 @@ import {FxBaseChildTunnel} from "./matic/FxBaseChildTunnel.sol";
 
 import "hardhat/console.sol";
 
+/// @title PolygonDAOChild
+/// @author Alex T
+/// @notice Child chain side of a Polygon data bridge meant to execute commands on the child chain
+/// @dev This can be used to execute commands forwarded from the DAO on the root chain
 contract PolygonDAOChild is FxBaseChildTunnel, Ownable {
     uint256 public latestStateId;
     address public latestRootMessageSender;

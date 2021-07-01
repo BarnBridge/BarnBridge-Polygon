@@ -4,7 +4,10 @@ pragma solidity ^0.8.5;
 import "@openzeppelin/contracts/access/Ownable.sol";
 import {FxBaseRootTunnel} from "./matic/FxBaseRootTunnel.sol";
 
-
+/// @title PolygonDAORoot
+/// @author Alex T
+/// @notice Root chain side of a Polygon data bridge meant to execute commands on the child chain
+/// @dev This can be used to forward commands given by the DAO to be executed on the child chain
 contract PolygonDAORoot is FxBaseRootTunnel, Ownable {
     bytes public latestData;
 
