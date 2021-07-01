@@ -25,15 +25,15 @@ contract PolygonTokenHarvester is OwnableUpgradeable {
     function initialize(uint256 _withdrawCooldown, address _rootChainManager) initializer public {
         __Ownable_init();
 
-        setWithdrawCooldown(_withdrawCooldown);
-
         if (_rootChainManager != address(0)) {
             _onRootChain = true;
             rootChainManager = _rootChainManager;
         } else {
             _onRootChain = false;
         }
-    }
+
+        withdrawCooldown = _withdrawCooldown;
+     }
 
     /// @notice Allows the call only on the root chain
     /// @dev Checks is based on rootChainManager being set
