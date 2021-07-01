@@ -44,7 +44,7 @@
 ### onlyOnRoot
 Allows the call only on the root chain
 
-> Checks if rootChainManager is set and only then allows the call
+> Checks is based on rootChainManager being set
 
 #### Declaration
 ```solidity
@@ -53,8 +53,9 @@ Allows the call only on the root chain
 
 
 ### onlyOnChild
-No description
+Allows the call only on the child chain
 
+> Checks is based on rootChainManager being not set
 
 #### Declaration
 ```solidity
@@ -78,16 +79,22 @@ No description
 
 
 ### setWithdrawCooldown
-No description
+Sets the minimum number of blocks that must pass between withdrawals
+
+> This limit is set to not spam the withdrawal process with lots of small withdrawals
 
 
 #### Declaration
 ```solidity
   function setWithdrawCooldown(
+    uint256 _withdrawCooldown
   ) public
 ```
 
-
+#### Args:
+| Arg | Type | Description |
+| --- | --- | --- |
+|`_withdrawCooldown` | uint256 | Number of blocks
 
 ### withdrawOnRoot
 No description

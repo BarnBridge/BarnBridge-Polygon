@@ -17,7 +17,7 @@ contract PolygonCommunityVault is OwnableUpgradeable {
     /// @notice Address of the ERC20 token handled by the vault
     address public token;
 
-    /// @notice Sets the allowance of a spending address
+    /// @notice Notfies of allowance being set
     /// @dev This event is emitted when setAlowance is called
     /// @param caller Address that called setAllowance
     /// @param spender Address that the allowance has been set for
@@ -51,12 +51,18 @@ contract PolygonCommunityVault is OwnableUpgradeable {
         }
     }
 
-    function setAllowance(address spender, uint256 amount) public onlyOwner {
-        IERC20(token).approve(spender, amount);
+    /// @notice Sets Allowance for specified contract for the managed token
+    /// @dev Emits SetAllowance on allowance being successfully set
+    /// @param _spender Address that is allowed to spend the funds
+    /// @param _amount How much cand the address spend
+    function setAllowance(address _spender, uint256 _amount) public onlyOwner {
+        IERC20(token).approve(_spender, _amount);
 
-        emit SetAllowance(msg.sender, spender, amount);
+        emit SetAllowance(msg.sender, _spender, _amount);
     }
 
+    /// @notice Transfers full balance of managed token through the Polygon Bridge
+    /// @dev Emits TransferToChild on funds being sucessfuly deposited
     function transferToChild() public { // onlyOnRoot , maybe onlyOwner
         require(erc20Predicate != address(0), "Vault: transfer to child chain is disabled");
 

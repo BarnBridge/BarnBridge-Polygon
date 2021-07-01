@@ -57,20 +57,29 @@ PolygonCommunityVault initializer
 |`_erc20Predicate` | address | Polygon ERC20 Predicate. Zero address for child deployment
 
 ### setAllowance
-No description
+Sets Allowance for specified contract for the managed token
+
+> Emits SetAllowance on allowance being successfully set
 
 
 #### Declaration
 ```solidity
   function setAllowance(
+    address _spender,
+    uint256 _amount
   ) public
 ```
 
-
+#### Args:
+| Arg | Type | Description |
+| --- | --- | --- |
+|`_spender` | address | Address that is allowed to spend the funds
+|`_amount` | uint256 | How much cand the address spend
 
 ### transferToChild
-No description
+Transfers full balance of managed token through the Polygon Bridge
 
+> Emits TransferToChild on funds being sucessfuly deposited
 
 #### Declaration
 ```solidity
@@ -85,7 +94,7 @@ No description
 ## Events
 
 ### SetAllowance
-Sets the allowance of a spending address
+Notfies of allowance being set
 
 > This event is emitted when setAlowance is called
 

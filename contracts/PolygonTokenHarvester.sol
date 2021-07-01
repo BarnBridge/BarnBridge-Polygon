@@ -37,7 +37,7 @@ contract PolygonTokenHarvester is OwnableUpgradeable {
     }
 
     /// @notice Allows the call only on the root chain
-    /// @dev Checks if rootChainManager is set and only then allows the call
+    /// @dev Checks is based on rootChainManager being set
     modifier onlyOnRoot {
         require(
             _onRootChain == true,
@@ -46,6 +46,8 @@ contract PolygonTokenHarvester is OwnableUpgradeable {
         _;
     }
 
+    /// @notice Allows the call only on the child chain
+    /// @dev Checks is based on rootChainManager being not set
     modifier onlyOnChild {
         require(
             _onRootChain == false,
@@ -54,6 +56,9 @@ contract PolygonTokenHarvester is OwnableUpgradeable {
         _;
     }
 
+    /// @notice Sets the minimum number of blocks that must pass between withdrawals
+    /// @dev This limit is set to not spam the withdrawal process with lots of small withdrawals
+    /// @param _withdrawCooldown Number of blocks
     function setWithdrawCooldown(uint256 _withdrawCooldown) public onlyOwner onlyOnChild {
         withdrawCooldown = _withdrawCooldown;
     }
