@@ -29,6 +29,9 @@ No description
   ) external returns (address)
 ```
 
+#### Modifiers:
+No modifiers
+
 
 
 ### transferFees
@@ -40,6 +43,9 @@ No description
   function transferFees(
   ) external
 ```
+
+#### Modifiers:
+No modifiers
 
 
 

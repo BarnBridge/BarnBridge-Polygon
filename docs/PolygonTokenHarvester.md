@@ -33,7 +33,7 @@ Assists with moving any given token from the child chain to the root chain. Made
 > Note this contains internal vars as well due to a bug in the docgen procedure
 
 | Var | Type |
-| --- | :---: |
+| --- | --- |
 | rootChainManager | address |
 | lastWithdraw | mapping(address => uint256) |
 | withdrawCooldown | uint256 |
@@ -77,8 +77,13 @@ PolygonTokenHarvester initializer
   function initialize(
     uint256 _withdrawCooldown,
     address _rootChainManager
-  ) public
+  ) public initializer
 ```
+
+#### Modifiers:
+| Modifier |
+| --- |
+| initializer |
 
 #### Args:
 | Arg | Type | Description |
@@ -96,8 +101,14 @@ Sets the minimum number of blocks that must pass between withdrawals
 ```solidity
   function setWithdrawCooldown(
     uint256 _withdrawCooldown
-  ) public
+  ) public onlyOwner onlyOnChild
 ```
+
+#### Modifiers:
+| Modifier |
+| --- |
+| onlyOwner |
+| onlyOnChild |
 
 #### Args:
 | Arg | Type | Description |
@@ -114,8 +125,13 @@ Withdraws to itself exited funds from Polygon
 ```solidity
   function withdrawOnRoot(
     bytes _data
-  ) public returns (bytes)
+  ) public onlyOnRoot returns (bytes)
 ```
+
+#### Modifiers:
+| Modifier |
+| --- |
+| onlyOnRoot |
 
 #### Args:
 | Arg | Type | Description |
@@ -136,8 +152,13 @@ Transfers full balance of token to owner
 ```solidity
   function transferToOwner(
     address _token
-  ) public
+  ) public onlyOnRoot
 ```
+
+#### Modifiers:
+| Modifier |
+| --- |
+| onlyOnRoot |
 
 #### Args:
 | Arg | Type | Description |
@@ -155,8 +176,13 @@ Exit funds from polygon and transfer to owner
   function withdrawAndTransferToOwner(
     bytes _data,
     address _token
-  ) public returns (bytes)
+  ) public onlyOnRoot returns (bytes)
 ```
+
+#### Modifiers:
+| Modifier |
+| --- |
+| onlyOnRoot |
 
 #### Args:
 | Arg | Type | Description |
@@ -174,8 +200,13 @@ Withdraws full token balance from the child chain
 ```solidity
   function withdrawOnChild(
     address _childToken
-  ) public
+  ) public onlyOnChild
 ```
+
+#### Modifiers:
+| Modifier |
+| --- |
+| onlyOnChild |
 
 #### Args:
 | Arg | Type | Description |
@@ -192,8 +223,13 @@ Transfer fees from SmartYield and withdraw them from the child chain
 ```solidity
   function claimAndWithdrawOnChild(
     address _syProvider
-  ) public
+  ) public onlyOnChild
 ```
+
+#### Modifiers:
+| Modifier |
+| --- |
+| onlyOnChild |
 
 #### Args:
 | Arg | Type | Description |
@@ -213,7 +249,7 @@ Logs a transfer of tokens to owner
 
 #### Params:
 | Param | Type | Indexed | Description |
-| --- | :---: | :---: | --- |
+| --- | --- | :---: | --- |
 |`caller` | address | :white_check_mark: | Address that called transferToOwner
 |`owner` | address | :white_check_mark: | Address that the funds have been transferred to
 |`token` | address | :white_check_mark: | Address of the transferred token
@@ -227,7 +263,7 @@ Logs a withdrawal being made on the root chain
 
 #### Params:
 | Param | Type | Indexed | Description |
-| --- | :---: | :---: | --- |
+| --- | --- | :---: | --- |
 |`caller` | address | :white_check_mark: | Address that called withdrawOnRoot
 ### WithdrawOnChild
 Logs withdrawal being made on the child chain
@@ -238,7 +274,7 @@ Logs withdrawal being made on the child chain
 
 #### Params:
 | Param | Type | Indexed | Description |
-| --- | :---: | :---: | --- |
+| --- | --- | :---: | --- |
 |`caller` | address | :white_check_mark: | Address that called withdrawOnChild
 |`token` | address | :white_check_mark: | Address of the withdrawn token
 |`amount` | uint256 |  | The amount of tokens that were withdrawn

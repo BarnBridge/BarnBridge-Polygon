@@ -23,7 +23,7 @@
 > Note this contains internal vars as well due to a bug in the docgen procedure
 
 | Var | Type |
-| --- | :---: |
+| --- | --- |
 | uToken | address |
 | feesOwner | address |
 
@@ -41,6 +41,9 @@ No description
   ) public
 ```
 
+#### Modifiers:
+No modifiers
+
 
 
 ### setFeesOwner
@@ -53,6 +56,9 @@ No description
   ) external
 ```
 
+#### Modifiers:
+No modifiers
+
 
 
 ### transferFees
@@ -64,6 +70,9 @@ No description
   function transferFees(
   ) external
 ```
+
+#### Modifiers:
+No modifiers
 
 
 

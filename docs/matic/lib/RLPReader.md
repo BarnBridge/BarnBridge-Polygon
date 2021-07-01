@@ -26,7 +26,7 @@
 > Note this contains internal vars as well due to a bug in the docgen procedure
 
 | Var | Type |
-| --- | :---: |
+| --- | --- |
 | STRING_SHORT_START | uint8 |
 | STRING_LONG_START | uint8 |
 | LIST_SHORT_START | uint8 |
@@ -47,6 +47,9 @@ No description
   ) internal returns (struct RLPReader.RLPItem)
 ```
 
+#### Modifiers:
+No modifiers
+
 
 
 ### toList
@@ -58,6 +61,9 @@ No description
   function toList(
   ) internal returns (struct RLPReader.RLPItem[])
 ```
+
+#### Modifiers:
+No modifiers
 
 
 
@@ -71,6 +77,9 @@ No description
   ) internal returns (bool)
 ```
 
+#### Modifiers:
+No modifiers
+
 
 
 ### toRlpBytes
@@ -82,6 +91,9 @@ RLPItem conversions into data types *
   function toRlpBytes(
   ) internal returns (bytes)
 ```
+
+#### Modifiers:
+No modifiers
 
 
 
@@ -95,6 +107,9 @@ No description
   ) internal returns (address)
 ```
 
+#### Modifiers:
+No modifiers
+
 
 
 ### toUint
@@ -106,6 +121,9 @@ No description
   function toUint(
   ) internal returns (uint256)
 ```
+
+#### Modifiers:
+No modifiers
 
 
 
@@ -119,6 +137,9 @@ No description
   ) internal returns (uint256)
 ```
 
+#### Modifiers:
+No modifiers
+
 
 
 ### toBytes
@@ -130,6 +151,9 @@ No description
   function toBytes(
   ) internal returns (bytes)
 ```
+
+#### Modifiers:
+No modifiers
 
 
 

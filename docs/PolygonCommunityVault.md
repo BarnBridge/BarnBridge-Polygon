@@ -25,7 +25,7 @@ Assists with moving a specified token from the root chain to the child chain. Ma
 > Note this contains internal vars as well due to a bug in the docgen procedure
 
 | Var | Type |
-| --- | :---: |
+| --- | --- |
 | rootChainManager | contract IRootChainManager |
 | erc20Predicate | address |
 | token | address |
@@ -46,8 +46,13 @@ PolygonCommunityVault initializer
     address _token,
     address _rootChainManager,
     address _erc20Predicate
-  ) public
+  ) public initializer
 ```
+
+#### Modifiers:
+| Modifier |
+| --- |
+| initializer |
 
 #### Args:
 | Arg | Type | Description |
@@ -67,8 +72,13 @@ Sets Allowance for specified contract for the managed token
   function setAllowance(
     address _spender,
     uint256 _amount
-  ) public
+  ) public onlyOwner
 ```
+
+#### Modifiers:
+| Modifier |
+| --- |
+| onlyOwner |
 
 #### Args:
 | Arg | Type | Description |
@@ -87,6 +97,9 @@ Transfers full balance of managed token through the Polygon Bridge
   ) public
 ```
 
+#### Modifiers:
+No modifiers
+
 
 
 
@@ -102,7 +115,7 @@ Notifies of allowance being set
 
 #### Params:
 | Param | Type | Indexed | Description |
-| --- | :---: | :---: | --- |
+| --- | --- | :---: | --- |
 |`caller` | address | :white_check_mark: | Address that called setAllowance
 |`spender` | address | :white_check_mark: | Address that the allowance has been set for
 |`amount` | uint256 |  | The amount of tokens that spender can spend
@@ -115,7 +128,7 @@ Notifies of a transfer to the child chain being made
 
 #### Params:
 | Param | Type | Indexed | Description |
-| --- | :---: | :---: | --- |
+| --- | --- | :---: | --- |
 |`caller` | address | :white_check_mark: | Address that called transferToChild
 |`token` | address | :white_check_mark: | Address of the transferred token
 |`amount` | uint256 |  | The amount of tokens that were sent to the child chain

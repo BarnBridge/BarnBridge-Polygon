@@ -37,6 +37,9 @@ Deposit tokens into pos portal
   ) external
 ```
 
+#### Modifiers:
+No modifiers
+
 #### Args:
 | Arg | Type | Description |
 | --- | --- | --- |
@@ -60,6 +63,9 @@ Processes withdraw based on custom logic. Example: transfer ERC20/ERC721, mint E
     bytes logRLPList
   ) external
 ```
+
+#### Modifiers:
+No modifiers
 
 #### Args:
 | Arg | Type | Description |

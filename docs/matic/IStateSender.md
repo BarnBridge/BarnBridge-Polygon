@@ -30,6 +30,9 @@ No description
   ) external
 ```
 
+#### Modifiers:
+No modifiers
+
 
 
 
@@ -45,7 +48,7 @@ Event emitted when when syncState is called
 
 #### Params:
 | Param | Type | Indexed | Description |
-| --- | :---: | :---: | --- |
+| --- | --- | :---: | --- |
 |`id` | uint256 | :white_check_mark: | Id of the sync, increamented for each event in case of actual state sender contract
 |`contractAddress` | address | :white_check_mark: | the contract receiving data on child chain
 |`data` | bytes |  | bytes data to be sent

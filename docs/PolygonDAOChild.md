@@ -23,7 +23,7 @@ Child chain side of a Polygon data bridge meant to execute commands on the child
 > Note this contains internal vars as well due to a bug in the docgen procedure
 
 | Var | Type |
-| --- | :---: |
+| --- | --- |
 | latestStateId | uint256 |
 | latestRootMessageSender | address |
 | latestData | bytes |
@@ -39,8 +39,13 @@ No description
 #### Declaration
 ```solidity
   function constructor(
-  ) public
+  ) public FxBaseChildTunnel
 ```
+
+#### Modifiers:
+| Modifier |
+| --- |
+| FxBaseChildTunnel |
 
 
 
@@ -54,6 +59,9 @@ No description
   ) external
 ```
 
+#### Modifiers:
+No modifiers
+
 
 
 ### _processMessageFromRoot
@@ -63,8 +71,13 @@ No description
 #### Declaration
 ```solidity
   function _processMessageFromRoot(
-  ) internal
+  ) internal validateSender
 ```
+
+#### Modifiers:
+| Modifier |
+| --- |
+| validateSender |
 
 
 
@@ -75,8 +88,13 @@ No description
 #### Declaration
 ```solidity
   function sendMessageToRoot(
-  ) public
+  ) public onlyOwner
 ```
+
+#### Modifiers:
+| Modifier |
+| --- |
+| onlyOwner |
 
 
 

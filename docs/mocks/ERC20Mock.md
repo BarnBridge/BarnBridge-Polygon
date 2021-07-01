@@ -26,8 +26,13 @@ No description
 #### Declaration
 ```solidity
   function constructor(
-  ) public
+  ) public ERC20
 ```
+
+#### Modifiers:
+| Modifier |
+| --- |
+| ERC20 |
 
 
 
@@ -40,6 +45,9 @@ No description
   function mint(
   ) public
 ```
+
+#### Modifiers:
+No modifiers
 
 
 

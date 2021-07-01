@@ -29,6 +29,9 @@ No description
   ) internal returns (bool)
 ```
 
+#### Modifiers:
+No modifiers
+
 
 
 ### _getNibbleArray
@@ -40,6 +43,9 @@ No description
   function _getNibbleArray(
   ) internal returns (bytes)
 ```
+
+#### Modifiers:
+No modifiers
 
 
 

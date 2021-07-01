@@ -30,6 +30,9 @@ No description
   ) external
 ```
 
+#### Modifiers:
+No modifiers
+
 
 
 ### depositFor
@@ -42,6 +45,9 @@ No description
   ) external
 ```
 
+#### Modifiers:
+No modifiers
+
 
 
 ### exit
@@ -53,6 +59,9 @@ No description
   function exit(
   ) external
 ```
+
+#### Modifiers:
+No modifiers
 
 
 

@@ -27,7 +27,7 @@ Mock child tunnel contract to receive and send message from L2
 > Note this contains internal vars as well due to a bug in the docgen procedure
 
 | Var | Type |
-| --- | :---: |
+| --- | --- |
 | fxChild | address |
 | fxRootTunnel | address |
 
@@ -57,6 +57,9 @@ No description
   ) internal
 ```
 
+#### Modifiers:
+No modifiers
+
 
 
 ### setFxRootTunnel
@@ -69,6 +72,9 @@ No description
   ) public
 ```
 
+#### Modifiers:
+No modifiers
+
 
 
 ### processMessageFromRoot
@@ -80,6 +86,9 @@ No description
   function processMessageFromRoot(
   ) public
 ```
+
+#### Modifiers:
+No modifiers
 
 
 
@@ -95,6 +104,9 @@ Emit message that can be received on Root Tunnel
     bytes message
   ) internal
 ```
+
+#### Modifiers:
+No modifiers
 
 #### Args:
 | Arg | Type | Description |
@@ -121,6 +133,9 @@ Since it is called via a system call, any event will not be emitted during its e
     bytes message
   ) internal
 ```
+
+#### Modifiers:
+No modifiers
 
 #### Args:
 | Arg | Type | Description |

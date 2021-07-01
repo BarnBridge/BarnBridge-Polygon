@@ -26,8 +26,13 @@ No description
 #### Declaration
 ```solidity
   function constructor(
-  ) public
+  ) public PolygonDAOChild
 ```
+
+#### Modifiers:
+| Modifier |
+| --- |
+| PolygonDAOChild |
 
 
 
@@ -40,6 +45,9 @@ No description
   function processMessageFromRootTest(
   ) public
 ```
+
+#### Modifiers:
+No modifiers
 
 
 

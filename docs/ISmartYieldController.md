@@ -29,6 +29,9 @@ No description
   ) external returns (address)
 ```
 
+#### Modifiers:
+No modifiers
+
 
 
 ### setFeesOwner
@@ -40,6 +43,9 @@ No description
   function setFeesOwner(
   ) external
 ```
+
+#### Modifiers:
+No modifiers
 
 
 

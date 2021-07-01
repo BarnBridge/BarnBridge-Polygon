@@ -25,7 +25,7 @@ Root chain side of a Polygon data bridge meant to execute commands on the child 
 > Note this contains internal vars as well due to a bug in the docgen procedure
 
 | Var | Type |
-| --- | :---: |
+| --- | --- |
 | latestData | bytes |
 
 
@@ -43,8 +43,13 @@ PolygonDAORoot constructor
   function constructor(
     address _checkpointManager,
     address _fxRoot
-  ) public
+  ) public FxBaseRootTunnel
 ```
+
+#### Modifiers:
+| Modifier |
+| --- |
+| FxBaseRootTunnel |
 
 #### Args:
 | Arg | Type | Description |
@@ -65,6 +70,9 @@ Used to receive message from child chain
   ) internal
 ```
 
+#### Modifiers:
+No modifiers
+
 #### Args:
 | Arg | Type | Description |
 | --- | --- | --- |
@@ -80,8 +88,13 @@ Sends a payload to be executed on the child chain
 ```solidity
   function sendMessageToChild(
     bytes _message
-  ) public
+  ) public onlyOwner
 ```
+
+#### Modifiers:
+| Modifier |
+| --- |
+| onlyOwner |
 
 #### Args:
 | Arg | Type | Description |
@@ -100,8 +113,13 @@ Encodes and sends a payload to be executed on the child chain
     address _target,
     uint256 _value,
     bytes _data
-  ) public
+  ) public onlyOwner
 ```
+
+#### Modifiers:
+| Modifier |
+| --- |
+| onlyOwner |
 
 #### Args:
 | Arg | Type | Description |
@@ -123,7 +141,7 @@ Logs a call being forwarded to the child chain
 
 #### Params:
 | Param | Type | Indexed | Description |
-| --- | :---: | :---: | --- |
+| --- | --- | :---: | --- |
 |`caller` | address | :white_check_mark: | Address that called callOnChild
 |`target` | address |  | Target of call on the child chain
 |`value` | uint256 |  | Value to transfer on execution

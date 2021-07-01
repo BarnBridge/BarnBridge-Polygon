@@ -24,7 +24,7 @@
 > Note this contains internal vars as well due to a bug in the docgen procedure
 
 | Var | Type |
-| --- | :---: |
+| --- | --- |
 | SEND_MESSAGE_EVENT_SIG | bytes32 |
 | fxRoot | contract IFxStateSender |
 | checkpointManager | contract ICheckpointManager |
@@ -45,6 +45,9 @@ No description
   ) internal
 ```
 
+#### Modifiers:
+No modifiers
+
 
 
 ### setFxChildTunnel
@@ -56,6 +59,9 @@ No description
   function setFxChildTunnel(
   ) public
 ```
+
+#### Modifiers:
+No modifiers
 
 
 
@@ -70,6 +76,9 @@ Send bytes message to Child Tunnel
     bytes message
   ) internal
 ```
+
+#### Modifiers:
+No modifiers
 
 #### Args:
 | Arg | Type | Description |
@@ -90,6 +99,9 @@ No description
   ) internal returns (bytes)
 ```
 
+#### Modifiers:
+No modifiers
+
 
 
 ### receiveMessage
@@ -105,6 +117,9 @@ receive message from  L2 to L1, validated by proof
     bytes inputData
   ) public
 ```
+
+#### Modifiers:
+No modifiers
 
 #### Args:
 | Arg | Type | Description |
@@ -135,6 +150,9 @@ Since it is called via a system call, any event will not be emitted during its e
     bytes message
   ) internal
 ```
+
+#### Modifiers:
+No modifiers
 
 #### Args:
 | Arg | Type | Description |

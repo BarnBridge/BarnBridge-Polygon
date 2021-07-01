@@ -28,8 +28,13 @@ No description
 #### Declaration
 ```solidity
   function constructor(
-  ) public
+  ) public ERC20
 ```
+
+#### Modifiers:
+| Modifier |
+| --- |
+| ERC20 |
 
 
 
@@ -43,6 +48,9 @@ No description
   ) public
 ```
 
+#### Modifiers:
+No modifiers
+
 
 
 ### deposit
@@ -55,6 +63,9 @@ No description
   ) external
 ```
 
+#### Modifiers:
+No modifiers
+
 
 
 ### withdraw
@@ -66,6 +77,9 @@ No description
   function withdraw(
   ) external
 ```
+
+#### Modifiers:
+No modifiers
 
 
 
