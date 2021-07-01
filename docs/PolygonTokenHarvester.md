@@ -21,7 +21,6 @@
   - [withdrawOnChild](#withdrawonchild)
   - [claimAndWithdrawOnChild](#claimandwithdrawonchild)
 - [Events](#events)
-  - [SetAllowance](#setallowance)
   - [TransferToOwner](#transfertoowner)
   - [WithdrawOnRoot](#withdrawonroot)
   - [WithdrawOnChild](#withdrawonchild)
@@ -97,28 +96,44 @@ Sets the minimum number of blocks that must pass between withdrawals
 |`_withdrawCooldown` | uint256 | Number of blocks
 
 ### withdrawOnRoot
-No description
+Withdraws to itself exited funds from Polygon
+
+> Forwards the exit call to the Polygon rootChainManager
 
 
 #### Declaration
 ```solidity
   function withdrawOnRoot(
+    bytes _data
   ) public returns (bytes)
 ```
 
+#### Args:
+| Arg | Type | Description |
+| --- | --- | --- |
+|`_data` | bytes | Exit payload created with the Matic SDK
 
-
+#### Returns:
+| Type | Description |
+| --- | --- |
+|`Bytes` | return of the rootChainManager exit call
 ### transferToOwner
-No description
+Transfers full balance of token to owner
+
+> Use this after withdrawOnRoot to transfer what you have exited from Polygon to owner
 
 
 #### Declaration
 ```solidity
   function transferToOwner(
+    address _token
   ) public
 ```
 
-
+#### Args:
+| Arg | Type | Description |
+| --- | --- | --- |
+|`_token` | address | Address of token to transfer
 
 ### withdrawAndTransferToOwner
 No description
@@ -159,12 +174,6 @@ No description
 
 
 ## Events
-
-### SetAllowance
-No description
-
-  
-
 
 ### TransferToOwner
 No description

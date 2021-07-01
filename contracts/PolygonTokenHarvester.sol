@@ -18,7 +18,6 @@ contract PolygonTokenHarvester is OwnableUpgradeable {
     mapping(address => uint256) public lastWithdraw;
     uint256 public withdrawCooldown;
 
-    event SetAllowance(address indexed caller, address indexed spender, uint256 amount);
     event TransferToOwner(address indexed caller, address indexed owner, address indexed token, uint256 amount);
     event WithdrawOnRoot(address indexed caller);
     event WithdrawOnChild(address indexed caller, address indexed token, uint256 amount);
@@ -64,6 +63,11 @@ contract PolygonTokenHarvester is OwnableUpgradeable {
     }
 
     // Root Chain Related Functions
+
+    /// @notice Withdraws to itself exited funds from Polygon
+    /// @dev Forwards the exit call to the Polygon rootChainManager
+    /// @param _data Exit payload created with the Matic SDK
+    /// @return Bytes return of the rootChainManager exit call
     function withdrawOnRoot(bytes memory _data) public onlyOnRoot returns (bytes memory) {
         (bool success, bytes memory returnData) = rootChainManager.call(_data);
         require(success, string(returnData));
@@ -73,6 +77,9 @@ contract PolygonTokenHarvester is OwnableUpgradeable {
         return returnData;
     }
 
+    /// @notice Transfers full balance of token to owner
+    /// @dev Use this after withdrawOnRoot to transfer what you have exited from Polygon to owner
+    /// @param _token Address of token to transfer
     function transferToOwner(address _token) public onlyOnRoot {
         require(_token != address(0), "Harvester: token address must be specified");
 
