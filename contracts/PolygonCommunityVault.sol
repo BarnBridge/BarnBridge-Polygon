@@ -17,15 +17,15 @@ contract PolygonCommunityVault is OwnableUpgradeable {
     /// @notice Address of the ERC20 token handled by the vault
     address public token;
 
-    /// @notice Notfies of allowance being set
-    /// @dev This event is emitted when setAlowance is called
+    /// @notice Notifies of allowance being set
+    /// @dev Emitted when setAlowance is called
     /// @param caller Address that called setAllowance
     /// @param spender Address that the allowance has been set for
     /// @param amount The amount of tokens that spender can spend
     event SetAllowance(address indexed caller, address indexed spender, uint256 amount);
     
-    /// @notice Explain to an end user what this does
-    /// @dev Explain to a developer any extra details
+    /// @notice Notifies of a transfer to the child chain being made
+    /// @dev Emitted when transferToChild is called
     /// @param caller Address that called transferToChild
     /// @param token Address of the transferred token
     /// @param amount The amount of tokens that were sent to the child chain
