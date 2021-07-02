@@ -13,10 +13,19 @@ contract PolygonDAOChild is FxBaseChildTunnel, Ownable {
     address public latestRootMessageSender;
     bytes public latestData;
 
+    /// @notice PolygonDAOChild constructor
+    /// @dev calls FxBaseChildTunnel(_fxChild)
+    /// @param _fxChild Address of FxStateChildTunnel from https://docs.matic.network/docs/develop/l1-l2-communication/state-transfer/
     constructor(address _fxChild) FxBaseChildTunnel(_fxChild) {}
 
+    /// @notice Enables cotract to receive ETH
     receive() external payable {}
 
+    /// @notice Called when there is a message from the root chain
+    /// @dev This executes a DAO command on the child chain
+    /// @param _stateId StateId
+    /// @param _sender This should be the root chain end of the tunnel
+    /// @param _data ABI encoded payload to execute
     function _processMessageFromRoot(
         uint256 _stateId,
         address _sender,
@@ -39,7 +48,9 @@ contract PolygonDAOChild is FxBaseChildTunnel, Ownable {
         }
     }
 
-    // NOTE i can't see us needing this
+    /// @notice Used to send a message to the root chain
+    /// @dev Not currently used
+    /// @param message payload to send to root chain
     function sendMessageToRoot(bytes memory message) public onlyOwner {
         _sendMessageToRoot(message);
     }

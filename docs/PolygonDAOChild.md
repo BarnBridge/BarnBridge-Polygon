@@ -33,12 +33,15 @@ Child chain side of a Polygon data bridge meant to execute commands on the child
 ## Functions
 
 ### constructor
-No description
+PolygonDAOChild constructor
+
+> calls FxBaseChildTunnel(_fxChild)
 
 
 #### Declaration
 ```solidity
   function constructor(
+    address _fxChild
   ) public FxBaseChildTunnel
 ```
 
@@ -47,10 +50,13 @@ No description
 | --- |
 | FxBaseChildTunnel |
 
-
+#### Args:
+| Arg | Type | Description |
+| --- | --- | --- |
+|`_fxChild` | address | Address of FxStateChildTunnel from https://docs.matic.network/docs/develop/l1-l2-communication/state-transfer/
 
 ### receive
-No description
+Enables cotract to receive ETH
 
 
 #### Declaration
@@ -65,12 +71,17 @@ No modifiers
 
 
 ### _processMessageFromRoot
-No description
+Called when there is a message from the root chain
+
+> This executes a DAO command on the child chain
 
 
 #### Declaration
 ```solidity
   function _processMessageFromRoot(
+    uint256 _stateId,
+    address _sender,
+    bytes _data
   ) internal validateSender
 ```
 
@@ -79,15 +90,23 @@ No description
 | --- |
 | validateSender |
 
-
+#### Args:
+| Arg | Type | Description |
+| --- | --- | --- |
+|`_stateId` | uint256 | StateId
+|`_sender` | address | This should be the root chain end of the tunnel
+|`_data` | bytes | ABI encoded payload to execute
 
 ### sendMessageToRoot
-No description
+Used to send a message to the root chain
+
+> Not currently used
 
 
 #### Declaration
 ```solidity
   function sendMessageToRoot(
+    bytes message
   ) public onlyOwner
 ```
 
@@ -96,7 +115,10 @@ No description
 | --- |
 | onlyOwner |
 
-
+#### Args:
+| Arg | Type | Description |
+| --- | --- | --- |
+|`message` | bytes | payload to send to root chain
 
 
 
