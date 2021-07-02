@@ -51,6 +51,20 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
       "setFxRootTunnel", l1deployResult.address
     );
     console.log(`executed setFxRootTunnel (tx: ${txResult.transactionHash}) with status ${txResult.status}`);
+
+    txResult = await l2execute(
+      l2deploymentName,
+      {from: owner},
+      "renounceOwnership"
+    );
+    console.log(`executed renounceOwnership (tx: ${txResult.transactionHash}) with status ${txResult.status}`);
+
+    txResult = await l2execute(
+      "PolygonTokenHarvester",
+      {from: owner},
+      "transferOwnership", l2deployResult.address
+    );
+    console.log(`executed transferOwnership (tx: ${txResult.transactionHash}) with status ${txResult.status}`);
   } else if (l1deployResult.newlyDeployed || l2deployResult.newlyDeployed) {
     console.log("at least one contract was previously deployed, you should try 'npx hardhat --network XXX redeploy-polygon-dao`");
   }

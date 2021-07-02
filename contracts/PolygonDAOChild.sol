@@ -18,7 +18,7 @@ contract PolygonDAOChild is FxBaseChildTunnel, Ownable {
     /// @param _fxChild Address of FxStateChildTunnel from https://docs.matic.network/docs/develop/l1-l2-communication/state-transfer/
     constructor(address _fxChild) FxBaseChildTunnel(_fxChild) {}
 
-    /// @notice Enables cotract to receive ETH
+    /// @notice Enables contract to receive ETH
     receive() external payable {}
 
     /// @notice Called when there is a message from the root chain

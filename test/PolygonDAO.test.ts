@@ -63,6 +63,13 @@ describe("Polygon DAO Root Chain Tests", () => {
         .to.be.revertedWith("Ownable: caller is not the owner");
     });
 
+    it("Should renounceOwnership", async function () {
+      const {owner} = await setup();
+
+      await expect(owner.ChildDAO.renounceOwnership())
+        .to.emit(owner.ChildDAO, "OwnershipTransferred");
+    });
+
     it("Should transfer payload to bridge and execute it", async function () {
       const {RootDAO, ChildDAO, ChildMockERC20MOK, StateSender, owner, users} = await setup();
 

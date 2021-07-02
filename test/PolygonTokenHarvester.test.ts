@@ -21,7 +21,7 @@ const setup = deployments.createFixture(async ({
 
   const contracts = {
     RootHarvester: (await ethers.getContract("RootPolygonTokenHarvesterTest")),
-    ChildHarvester: (await ethers.getContract("ChildPolygonTokenHarvester")),
+    ChildHarvester: (await ethers.getContract("ChildPolygonTokenHarvesterTest")),
     Bond: (await ethers.getContractAt("IERC20", cfg.bondAddress, owner)),
     MockRootChainManager: (await ethers.getContract("MockRootChainManager")),
     ChildMockERC20MOK: (await ethers.getContract("ChildMockERC20MOK")),

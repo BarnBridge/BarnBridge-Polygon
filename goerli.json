@@ -683,7 +683,7 @@
       ]
     },
     "PolygonCommunityVault": {
-      "address": "0x25B1A87b85354a6F15265b5B327d0AAAb281C08F",
+      "address": "0xbAa446FeC8b25b77a244B2E3820bd5dfDd111AD2",
       "abi": [
         {
           "anonymous": false,
@@ -801,12 +801,12 @@
           "inputs": [
             {
               "internalType": "address",
-              "name": "spender",
+              "name": "_spender",
               "type": "address"
             },
             {
               "internalType": "uint256",
-              "name": "amount",
+              "name": "_amount",
               "type": "uint256"
             }
           ],
@@ -850,226 +850,8 @@
         }
       ]
     },
-    "PolygonDAOChildTest": {
-      "address": "0xf6262224e5da988ec90adACf1F4F194b1D63EC75",
-      "abi": [
-        {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "_fxChild",
-              "type": "address"
-            }
-          ],
-          "stateMutability": "nonpayable",
-          "type": "constructor"
-        },
-        {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": false,
-              "internalType": "bytes",
-              "name": "message",
-              "type": "bytes"
-            }
-          ],
-          "name": "MessageSent",
-          "type": "event"
-        },
-        {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "previousOwner",
-              "type": "address"
-            },
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "newOwner",
-              "type": "address"
-            }
-          ],
-          "name": "OwnershipTransferred",
-          "type": "event"
-        },
-        {
-          "inputs": [],
-          "name": "fxChild",
-          "outputs": [
-            {
-              "internalType": "address",
-              "name": "",
-              "type": "address"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "fxRootTunnel",
-          "outputs": [
-            {
-              "internalType": "address",
-              "name": "",
-              "type": "address"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "latestData",
-          "outputs": [
-            {
-              "internalType": "bytes",
-              "name": "",
-              "type": "bytes"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "latestRootMessageSender",
-          "outputs": [
-            {
-              "internalType": "address",
-              "name": "",
-              "type": "address"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "latestStateId",
-          "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "owner",
-          "outputs": [
-            {
-              "internalType": "address",
-              "name": "",
-              "type": "address"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "uint256",
-              "name": "stateId",
-              "type": "uint256"
-            },
-            {
-              "internalType": "address",
-              "name": "rootMessageSender",
-              "type": "address"
-            },
-            {
-              "internalType": "bytes",
-              "name": "data",
-              "type": "bytes"
-            }
-          ],
-          "name": "processMessageFromRoot",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "uint256",
-              "name": "stateId",
-              "type": "uint256"
-            },
-            {
-              "internalType": "address",
-              "name": "sender",
-              "type": "address"
-            },
-            {
-              "internalType": "bytes",
-              "name": "data",
-              "type": "bytes"
-            }
-          ],
-          "name": "processMessageFromRootTest",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "renounceOwnership",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "bytes",
-              "name": "message",
-              "type": "bytes"
-            }
-          ],
-          "name": "sendMessageToRoot",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "_fxRootTunnel",
-              "type": "address"
-            }
-          ],
-          "name": "setFxRootTunnel",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "newOwner",
-              "type": "address"
-            }
-          ],
-          "name": "transferOwnership",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        }
-      ]
-    },
     "PolygonDAORoot": {
-      "address": "0x7c00BE234da85a8C241390b016528252A2522310",
+      "address": "0x6f6BAAeF97eaC201483b807B34A712535293ceCe",
       "abi": [
         {
           "inputs": [
@@ -1101,6 +883,12 @@
               "internalType": "address",
               "name": "target",
               "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256"
             },
             {
               "indexed": false,
@@ -1150,6 +938,11 @@
               "internalType": "address",
               "name": "_target",
               "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_value",
+              "type": "uint256"
             },
             {
               "internalType": "bytes",
@@ -1270,7 +1063,7 @@
           "inputs": [
             {
               "internalType": "bytes",
-              "name": "message",
+              "name": "_message",
               "type": "bytes"
             }
           ],
@@ -1308,7 +1101,7 @@
       ]
     },
     "PolygonTokenHarvester": {
-      "address": "0x578138eB831910F7d6A72BE93BFE59AaFd7B2B62",
+      "address": "0xfb2bE18Fe60Fc091D0b25003bb31e8561805FBB0",
       "abi": [
         {
           "anonymous": false,
@@ -1327,31 +1120,6 @@
             }
           ],
           "name": "OwnershipTransferred",
-          "type": "event"
-        },
-        {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "caller",
-              "type": "address"
-            },
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "spender",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "amount",
-              "type": "uint256"
-            }
-          ],
-          "name": "SetAllowance",
           "type": "event"
         },
         {

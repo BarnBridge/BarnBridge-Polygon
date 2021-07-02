@@ -2,7 +2,7 @@ import { DeployFunction } from "hardhat-deploy/types";
 import { config } from "../../utils/config";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 
-const deploymentName = "ChildPolygonTokenHarvester";
+const deploymentName = "ChildPolygonTokenHarvesterTest";
 
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   // @ts-ignore
