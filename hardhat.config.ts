@@ -3,12 +3,11 @@ import { HardhatUserConfig } from "hardhat/types";
 import "hardhat-deploy";
 import "@nomiclabs/hardhat-ethers";
 import "@nomiclabs/hardhat-waffle";
-import "solidity-coverage"
+import "solidity-coverage";
 import "@tenderly/hardhat-tenderly";
-import { node_url, accounts, ownerKeyHardhat } from "./utils/network";
+import { accounts, node_url, ownerKeyHardhat } from "./utils/network";
 
 import "./tasks";
-
 
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY || "";
 
@@ -30,7 +29,7 @@ const config: HardhatUserConfig = {
         blockNumber: 4823788
       },
       companionNetworks: {
-        l1: 'hardhat',
+        l1: "hardhat"
       },
       accounts: [
         {
@@ -53,7 +52,7 @@ const config: HardhatUserConfig = {
       accounts: accounts("goerli"),
       gas: "auto",
       gasPrice: "auto",
-      gasMultiplier: 4,
+      gasMultiplier: 4
     },
     mumbai: {
       deploy: ["deploy/common", "deploy/l2"],
@@ -63,8 +62,27 @@ const config: HardhatUserConfig = {
       gasPrice: "auto",
       gasMultiplier: 1.5,
       companionNetworks: {
-        l1: 'goerli',
-      },
+        l1: "goerli"
+      }
+    },
+    mainnet: {
+      deploy: ["deploy/common", "deploy/l1"],
+      url: node_url("mainnet"),
+      accounts: accounts("mainnet"),
+      gas: "auto",
+      gasPrice: "auto",
+      gasMultiplier: 1.5
+    },
+    matic: {
+      deploy: ["deploy/common", "deploy/l2"],
+      url: node_url("matic"),
+      accounts: accounts("matic"),
+      gas: "auto",
+      gasPrice: "auto",
+      gasMultiplier: 1.5,
+      companionNetworks: {
+        l1: "mainnet"
+      }
     }
   },
   paths: {

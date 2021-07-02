@@ -14,7 +14,6 @@ Child chain side of a Polygon data bridge meant to execute commands on the child
   - [constructor](#constructor)
   - [receive](#receive)
   - [_processMessageFromRoot](#_processmessagefromroot)
-  - [sendMessageToRoot](#sendmessagetoroot)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -56,7 +55,7 @@ PolygonDAOChild constructor
 |`_fxChild` | address | Address of FxStateChildTunnel from https://docs.matic.network/docs/develop/l1-l2-communication/state-transfer/
 
 ### receive
-Enables cotract to receive ETH
+Enables contract to receive ETH
 
 
 #### Declaration
@@ -96,29 +95,6 @@ Called when there is a message from the root chain
 |`_stateId` | uint256 | StateId
 |`_sender` | address | This should be the root chain end of the tunnel
 |`_data` | bytes | ABI encoded payload to execute
-
-### sendMessageToRoot
-Used to send a message to the root chain
-
-> Not currently used
-
-
-#### Declaration
-```solidity
-  function sendMessageToRoot(
-    bytes message
-  ) public onlyOwner
-```
-
-#### Modifiers:
-| Modifier |
-| --- |
-| onlyOwner |
-
-#### Args:
-| Arg | Type | Description |
-| --- | --- | --- |
-|`message` | bytes | payload to send to root chain
 
 
 
