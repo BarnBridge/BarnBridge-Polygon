@@ -4,8 +4,6 @@ pragma solidity ^0.8.5;
 import "@openzeppelin/contracts/access/Ownable.sol";
 import {FxBaseChildTunnel} from "./matic/FxBaseChildTunnel.sol";
 
-import "hardhat/console.sol";
-
 /// @title PolygonDAOChild
 /// @author Alex T
 /// @notice Child chain side of a Polygon data bridge meant to execute commands on the child chain
@@ -37,7 +35,6 @@ contract PolygonDAOChild is FxBaseChildTunnel, Ownable {
             assembly {
                 result := add(result, 0x04)
             }
-            console.log(abi.decode(result, (string)));
             revert(abi.decode(result, (string)));
         }
     }
