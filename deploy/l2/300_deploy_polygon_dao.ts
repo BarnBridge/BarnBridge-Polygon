@@ -13,8 +13,8 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   // @ts-ignore
   const {deployments: l2deployments, getNamedAccounts, ethers} = hre;
 
-  const {deploy: l1deploy, execute: l1execute, fetchIfDifferent: l1FetchIfDifferent} = l1deployments;
-  const {deploy: l2deploy, execute: l2execute, fetchIfDifferent: l2FetchIfDifferent} = l2deployments;
+  const {deploy: l1deploy, execute: l1execute} = l1deployments;
+  const {deploy: l2deploy, execute: l2execute} = l2deployments;
 
   const cfg = config(hre);
 
@@ -52,13 +52,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     );
     console.log(`executed setFxRootTunnel (tx: ${txResult.transactionHash}) with status ${txResult.status}`);
 
-    txResult = await l2execute(
-      l2deploymentName,
-      {from: owner},
-      "renounceOwnership"
-    );
-    console.log(`executed renounceOwnership (tx: ${txResult.transactionHash}) with status ${txResult.status}`);
-
+    // TODO maybe move in a different script with catchUnknownSigner
     txResult = await l2execute(
       "PolygonTokenHarvester",
       {from: owner},

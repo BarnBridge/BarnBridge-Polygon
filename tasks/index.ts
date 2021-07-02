@@ -8,3 +8,4 @@ import "./sy-set-fees-owner";
 import "./send-usdc-from-sy-to-goerli";
 import "./sy-generate-fees";
 import "./tunnel-transfer-from-goerli";
+import "./token-harvester";

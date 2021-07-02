@@ -8,7 +8,7 @@ import {FxBaseChildTunnel} from "./matic/FxBaseChildTunnel.sol";
 /// @author Alex T
 /// @notice Child chain side of a Polygon data bridge meant to execute commands on the child chain
 /// @dev This can be used to execute commands forwarded from the DAO on the root chain
-contract PolygonDAOChild is FxBaseChildTunnel, Ownable {
+contract PolygonDAOChild is FxBaseChildTunnel {
     uint256 public latestStateId;
     address public latestRootMessageSender;
     bytes public latestData;
@@ -46,13 +46,6 @@ contract PolygonDAOChild is FxBaseChildTunnel, Ownable {
             }
             revert(abi.decode(result, (string)));
         }
-    }
-
-    /// @notice Used to send a message to the root chain
-    /// @dev Not currently used
-    /// @param message payload to send to root chain
-    function sendMessageToRoot(bytes memory message) public onlyOwner {
-        _sendMessageToRoot(message);
     }
 }
 
