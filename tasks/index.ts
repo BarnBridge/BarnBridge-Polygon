@@ -9,3 +9,4 @@ import "./send-usdc-from-sy-to-goerli";
 import "./sy-generate-fees";
 import "./tunnel-transfer-from-goerli";
 import "./token-harvester";
+import "./transfer-fees-mainnet";
