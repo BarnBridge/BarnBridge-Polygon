@@ -93,10 +93,9 @@ contract PolygonTokenHarvester is OwnableUpgradeable {
     /// @param _data Exit payload created with the Matic SDK
     /// @return Bytes return of the rootChainManager exit call
     function withdrawOnRoot(bytes memory _data) public onlyOnRoot returns (bytes memory) {
+        emit WithdrawOnRoot(_msgSender());
         (bool success, bytes memory returnData) = rootChainManager.call(_data);
         require(success, string(returnData));
-
-        emit WithdrawOnRoot(_msgSender());
 
         return returnData;
     }
@@ -145,7 +144,7 @@ contract PolygonTokenHarvester is OwnableUpgradeable {
         IERC20ChildToken erc20 = IERC20ChildToken(_childToken);
 
         uint256 amount = erc20.balanceOf(address(this));
-        
+
         emit WithdrawOnChild(_msgSender(), _childToken, amount);
         erc20.withdraw(amount);
     }
