@@ -112,9 +112,9 @@ contract PolygonTokenHarvester is OwnableUpgradeable {
         address to = owner();
 
         uint256 amount = erc20.balanceOf(address(this));
-        erc20.safeTransfer(to, amount);
 
         emit TransferToOwner(_msgSender(), to, _token, amount);
+        erc20.safeTransfer(to, amount);
     }
 
     /// @notice Exit funds from polygon and transfer to owner
@@ -145,9 +145,9 @@ contract PolygonTokenHarvester is OwnableUpgradeable {
         IERC20ChildToken erc20 = IERC20ChildToken(_childToken);
 
         uint256 amount = erc20.balanceOf(address(this));
-        erc20.withdraw(amount);
-
+        
         emit WithdrawOnChild(_msgSender(), _childToken, amount);
+        erc20.withdraw(amount);
     }
 
     /// @notice Transfer fees from SmartYield and withdraw them from the child chain

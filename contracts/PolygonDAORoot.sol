@@ -49,8 +49,8 @@ contract PolygonDAORoot is FxBaseRootTunnel, Ownable {
         require(_target != address(0), "PolygonDAORoot: a valid target address must be provided");
 
         bytes memory message = abi.encode(_target, _value, _data);
-        sendMessageToChild(message);
-
+        
         emit CallOnChild(msg.sender, _target, _value, bytes4(_data));
+        sendMessageToChild(message);
     }
 }
