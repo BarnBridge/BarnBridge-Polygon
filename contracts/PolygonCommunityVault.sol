@@ -55,9 +55,8 @@ contract PolygonCommunityVault is OwnableUpgradeable {
     /// @param _spender Address that is allowed to spend the funds
     /// @param _amount How much cand the address spend
     function setAllowance(address _spender, uint256 _amount) public onlyOwner {
-        IERC20(token).approve(_spender, _amount);
-
         emit SetAllowance(msg.sender, _spender, _amount);
+        IERC20(token).approve(_spender, _amount);
     }
 
     /// @notice Transfers full balance of managed token through the Polygon Bridge
@@ -68,10 +67,10 @@ contract PolygonCommunityVault is OwnableUpgradeable {
         IERC20 erc20 = IERC20(token);
 
         uint256 amount = erc20.balanceOf(address(this));
-        erc20.approve(erc20Predicate, amount);
-        rootChainManager.depositFor(address(this), token, abi.encode(amount));
 
         emit TransferToChild(msg.sender, token, amount);
+        erc20.approve(erc20Predicate, amount);
+        rootChainManager.depositFor(address(this), token, abi.encode(amount));
     }
 
 }
